@@ -1,6 +1,6 @@
 from django import forms
 from django.core.validators import EmailValidator
-from .models import QuoteRequest, ContactMessage
+from .models import QuoteRequest, ContactMessage, Service
 
 
 class QuoteRequestForm(forms.ModelForm):
@@ -59,25 +59,24 @@ class QuoteRequestForm(forms.ModelForm):
 
 class ContactForm(forms.ModelForm):
     """Form for contact page."""
-    SERVICE_CHOICES = [
-        ('', 'Select a service...'),
-        ('digital_content', 'Digital Content Creation'),
-        ('modeling', 'Professional Modeling'),
-        ('brand_collaboration', 'Brand Collaboration'),
-        ('social_media', 'Social Media Content'),
-        ('photography', 'Photography Services'),
-        ('creative_direction', 'Creative Direction'),
-        ('consultation', 'Consultation'),
-        ('other', 'Other Services'),
-    ]
     
     service_interest = forms.ChoiceField(
-        choices=SERVICE_CHOICES,
         required=False,
         widget=forms.Select(attrs={
             'class': 'form-control',
         })
     )
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Dynamically populate service choices from database
+        service_choices = [('', 'Select a service...')]
+        active_services = Service.objects.filter(is_active=True).order_by('order', 'name')
+        for service in active_services:
+            service_choices.append((service.name.lower().replace(' ', '_'), service.name))
+        # Add "Other Services" option at the end
+        service_choices.append(('other', 'Other Services'))
+        self.fields['service_interest'].choices = service_choices
     
     class Meta:
         model = ContactMessage
