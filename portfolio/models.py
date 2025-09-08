@@ -229,6 +229,22 @@ class ProfileImage(models.Model):
         return self.title
 
 
+class Service(TimeStampedModel):
+    """Model for contact form service options."""
+    name = models.CharField(max_length=100)
+    description = models.TextField(blank=True, help_text="Optional description of the service")
+    is_active = models.BooleanField(default=True, help_text="Show this service in contact form")
+    order = models.PositiveIntegerField(default=0, help_text="Display order (lower numbers first)")
+    
+    class Meta:
+        ordering = ['order', 'name']
+        verbose_name = 'Service'
+        verbose_name_plural = 'Services'
+    
+    def __str__(self):
+        return self.name
+
+
 class SiteSettings(models.Model):
     """Model for managing site-wide settings and social media links."""
     site_name = models.CharField(max_length=100, default="IMA ANA Portfolio")
@@ -256,5 +272,4 @@ class SiteSettings(models.Model):
         if not self.pk and SiteSettings.objects.exists():
             raise ValueError("Only one SiteSettings instance is allowed")
         super().save(*args, **kwargs)
-
 
