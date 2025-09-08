@@ -5,9 +5,12 @@ from django.urls import reverse, path
 from django.db.models import Count
 from django.shortcuts import render, redirect
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
+from django.contrib.auth import views as auth_views
 from .models import (
     PortfolioItem, PortfolioImage, Package, 
-    QuoteRequest, ContactMessage, GalleryImage, ProfileImage, SiteSettings
+    QuoteRequest, ContactMessage, GalleryImage, ProfileImage, SiteSettings, Service
 )
 
 
@@ -16,9 +19,19 @@ class PortfolioAdminSite(AdminSite):
     site_title = 'Portfolio Admin'
     index_title = 'Portfolio Management'
     site_url = '/'
+    login_template = 'custom_admin/login.html'
+    logout_template = 'registration/logged_out.html'
     
+    def has_permission(self, request):
+        """Check if user has permission to access admin site"""
+        return request.user.is_active and request.user.is_staff
+    
+    @method_decorator(login_required)
     def index(self, request, extra_context=None):
         """Custom dashboard with stats"""
+        if not self.has_permission(request):
+            return redirect('admin:login')
+            
         extra_context = extra_context or {}
         extra_context.update({
             'gallery_count': GalleryImage.objects.count(),
@@ -28,6 +41,15 @@ class PortfolioAdminSite(AdminSite):
             'profile_count': ProfileImage.objects.count(),
         })
         return render(request, 'custom_admin/index.html', extra_context)
+    
+    def get_urls(self):
+        """Override to add custom logout URL"""
+        from django.urls import path, include
+        urls = super().get_urls()
+        custom_urls = [
+            path('logout/', auth_views.LogoutView.as_view(next_page='/custom-admin/login/'), name='logout'),
+        ]
+        return custom_urls + urls
     
 
 

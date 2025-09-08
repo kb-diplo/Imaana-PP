@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.utils.html import format_html
 from .models import (
     PortfolioItem, PortfolioImage, Package, 
-    QuoteRequest, ContactMessage, GalleryImage, ProfileImage, SiteSettings
+    QuoteRequest, ContactMessage, GalleryImage, ProfileImage, SiteSettings, Service
 )
 
 
@@ -174,6 +174,19 @@ class ContactMessageAdmin(admin.ModelAdmin):
         return False
 
 
+class ServiceAdmin(admin.ModelAdmin):
+    list_display = ('name', 'is_active', 'order', 'created_at')
+    list_filter = ('is_active', 'created_at')
+    list_editable = ('is_active', 'order')
+    search_fields = ('name', 'description')
+    ordering = ('order', 'name')
+    fieldsets = (
+        (None, {
+            'fields': ('name', 'description', 'is_active', 'order')
+        }),
+    )
+
+
 class SiteSettingsAdmin(admin.ModelAdmin):
     list_display = ('site_name', 'hero_title', 'hero_subtitle', 'updated_at')
     fieldsets = (
@@ -219,6 +232,7 @@ admin.site.register(PortfolioImage, PortfolioImageAdmin)
 admin.site.register(Package, PackageAdmin)
 admin.site.register(QuoteRequest, QuoteRequestAdmin)
 admin.site.register(ContactMessage, ContactMessageAdmin)
+admin.site.register(Service, ServiceAdmin)
 admin.site.register(SiteSettings, SiteSettingsAdmin)
 
 # Note: GalleryImage and ProfileImage are registered with custom admin site only
