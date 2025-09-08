@@ -1,0 +1,117 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %}Home - Elsy Portfolio{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/home.css' %}">
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="container">
+        {% if profile_image %}
+            <img src="{{ profile_image.image.url }}" alt="{{ profile_image.title }}" class="profile-image">
+        {% else %}
+            <div class="profile-placeholder">
+                <i class="fas fa-user-circle"></i>
+            </div>
+        {% endif %}
+        <h1>{{ site_settings.hero_title|default:"IMA ANA" }}</h1>
+        <p class="lead">{{ site_settings.hero_subtitle|default:"Digital Creator & Professional Model" }}</p>
+        <a href="{% url 'contact' %}" class="btn btn-primary btn-lg">Get in Touch</a>
+    </div>
+</section>
+
+<!-- Gallery Section -->
+<section id="gallery" class="gallery-section">
+    <div class="container">
+        <div class="section-title">
+            <h2>My Gallery</h2>
+            <p class="lead">A collection of my personal photos</p>
+        </div>
+        
+        <div class="gallery-container">
+            {% for image in gallery_images %}
+                <div class="gallery-item" data-image="{{ image.image.url }}" data-alt="{{ image.alt_text|default:image.title }}">
+                    <img src="{{ image.image.url }}" alt="{{ image.alt_text|default:image.title }}" class="img-fluid">
+                    <div class="gallery-overlay">
+                        <i class="fas fa-search-plus"></i>
+                    </div>
+                </div>
+            {% empty %}
+                {% for i in "123456789"|make_list %}
+                    <div class="gallery-item">
+                        <div class="gallery-placeholder">
+                            <i class="fas fa-image"></i>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Call to Action Section -->
+<section class="cta-section">
+    <div class="container">
+        <h2>Have a project in mind? I'd love to hear about it</h2>
+        <p class="lead">Let's work together to create something amazing</p>
+        <a href="{% url 'contact' %}" class="btn btn-primary btn-lg">Get In Touch</a>
+    </div>
+</section>
+
+<!-- Lightbox Modal -->
+<div id="lightbox" class="lightbox" onclick="closeLightbox()">
+    <div class="lightbox-content">
+        <span class="lightbox-close" onclick="closeLightbox()">&times;</span>
+        <img id="lightbox-img" src="" alt="">
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Gallery lightbox functionality
+    const galleryItems = document.querySelectorAll('.gallery-item');
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightbox-img');
+    
+    function openLightbox(src, alt) {
+        lightbox.style.display = 'block';
+        lightboxImg.src = src;
+        lightboxImg.alt = alt;
+        document.body.style.overflow = 'hidden';
+    }
+    
+    function closeLightbox() {
+        lightbox.style.display = 'none';
+        document.body.style.overflow = 'auto';
+    }
+    
+    // Add click event listeners to gallery items
+    galleryItems.forEach(function(item) {
+        item.addEventListener('click', function() {
+            const imageSrc = this.getAttribute('data-image');
+            const imageAlt = this.getAttribute('data-alt');
+            openLightbox(imageSrc, imageAlt);
+        });
+    });
+    
+    // Close lightbox when clicking outside image
+    lightbox.addEventListener('click', closeLightbox);
+    
+    // Close lightbox with Escape key
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') {
+            closeLightbox();
+        }
+    });
+    
+    // Prevent lightbox from closing when clicking on the image
+    lightboxImg.addEventListener('click', function(event) {
+        event.stopPropagation();
+    });
+});
+</script>
+{% endblock %}

@@ -1,0 +1,95 @@
+{% extends "custom_admin/base.html" %}
+
+{% block page_title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-number">{{ gallery_count|default:0 }}</div>
+        <div class="stat-label">Gallery Photos</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-number">{{ messages_count|default:0 }}</div>
+        <div class="stat-label">New Messages</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-number">{{ profile_count|default:0 }}</div>
+        <div class="stat-label">Profile Photos</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-number">{{ portfolio_count|default:0 }}</div>
+        <div class="stat-label">Portfolio Items</div>
+    </div>
+</div>
+
+<div class="content-card">
+    <h3 style="margin-bottom: 2rem; color: var(--dark-color);">
+        <i class="fas fa-rocket"></i> Quick Actions
+    </h3>
+    
+    <div class="quick-actions">
+        <a href="/custom-admin/portfolio/profileimage/" class="action-card">
+            <div class="action-icon">
+                <i class="fas fa-user-circle"></i>
+            </div>
+            <div class="action-title">Profile Photo</div>
+            <div class="action-desc">Change your main profile picture</div>
+        </a>
+        
+        <a href="/custom-admin/portfolio/galleryimage/" class="action-card">
+            <div class="action-icon">
+                <i class="fas fa-images"></i>
+            </div>
+            <div class="action-title">Gallery</div>
+            <div class="action-desc">Add/remove gallery photos</div>
+        </a>
+        
+        <a href="/custom-admin/portfolio/sitesettings/" class="action-card">
+            <div class="action-icon">
+                <i class="fas fa-edit"></i>
+            </div>
+            <div class="action-title">Text & Links</div>
+            <div class="action-desc">Update titles and social media</div>
+        </a>
+        
+        <a href="/custom-admin/portfolio/contactmessage/" class="action-card">
+            <div class="action-icon">
+                <i class="fas fa-envelope"></i>
+            </div>
+            <div class="action-title">Messages</div>
+            <div class="action-desc">View client messages</div>
+        </a>
+    </div>
+</div>
+
+<div class="content-card">
+    <h3 style="margin-bottom: 1.5rem; color: var(--dark-color);">
+        <i class="fas fa-chart-line"></i> Recent Activity
+    </h3>
+    
+    <div class="row">
+        <div class="col-md-6">
+            <div class="d-flex align-items-center p-3 bg-light rounded-3 mb-3">
+                <div class="me-3">
+                    <i class="fas fa-image text-primary" style="font-size: 1.5rem;"></i>
+                </div>
+                <div>
+                    <h6 class="mb-1">Gallery Management</h6>
+                    <small class="text-muted">Manage your photo gallery</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="d-flex align-items-center p-3 bg-light rounded-3 mb-3">
+                <div class="me-3">
+                    <i class="fas fa-cog text-success" style="font-size: 1.5rem;"></i>
+                </div>
+                <div>
+                    <h6 class="mb-1">Site Settings</h6>
+                    <small class="text-muted">Update site information</small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

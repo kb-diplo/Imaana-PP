@@ -1,0 +1,219 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block title %}Contact - Elsy Portfolio{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/contact.css' %}">
+{% endblock %}
+
+{% block content %}
+<!-- Contact Section -->
+<section class="contact-section">
+    <div class="container">
+        <!-- Page Header -->
+        <div class="page-header">
+            <h1>Get In Touch</h1>
+            <p>Have a question or want to work together? Fill out the form below and I'll get back to you as soon as possible.</p>
+        </div>
+        
+        <!-- Contact Info -->
+        <div class="contact-info">
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <div class="info-card">
+                        <div class="info-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <h3 class="info-title">Email</h3>
+                        <p class="info-text">
+                            {% if site_settings.email %}
+                            <a href="mailto:{{ site_settings.email }}">{{ site_settings.email }}</a>
+                            {% else %}
+                            <a href="mailto:mukirikimm@gmail.com">mukirikimm@gmail.com</a>
+                            {% endif %}
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="info-card">
+                        <div class="info-icon">
+                            <i class="fas fa-phone"></i>
+                        </div>
+                        <h3 class="info-title">Phone</h3>
+                        <p class="info-text">
+                            {% if site_settings.phone %}
+                            <a href="tel:{{ site_settings.phone }}">{{ site_settings.phone }}</a>
+                            {% else %}
+                            <a href="tel:+254743121471">+254 743 121 471</a>
+                            {% endif %}
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="info-card">
+                        <div class="info-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <h3 class="info-title">Location</h3>
+                        <p class="info-text">
+                            {% if site_settings.address %}
+                            {{ site_settings.address }}
+                            {% else %}
+                            Nairobi, Kenya
+                            {% endif %}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contact Form Section -->
+        <div class="contact-form-section">
+            <div class="container">
+                <div class="section-title text-center">
+                    <h2>Send Me a Message</h2>
+                    <p>I'd love to hear from you! Fill out the form below and I'll get back to you as soon as possible.</p>
+                </div>
+                
+                <div class="row justify-content-center">
+                    <div class="col-lg-8">
+                        <div class="contact-form">
+                            {% if messages %}
+                                {% for message in messages %}
+                                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                                        {{ message }}
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+                            
+                            <form method="post" id="contactForm">
+                                {% csrf_token %}
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="{{ form.name.id_for_label }}" class="form-label">Name *</label>
+                                        {{ form.name }}
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="{{ form.email.id_for_label }}" class="form-label">Email *</label>
+                                        {{ form.email }}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="{{ form.phone.id_for_label }}" class="form-label">Phone</label>
+                                        {{ form.phone }}
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="{{ form.service_interest.id_for_label }}" class="form-label">Service of Interest</label>
+                                        {{ form.service_interest }}
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="{{ form.subject.id_for_label }}" class="form-label">Subject *</label>
+                                    {{ form.subject }}
+                                </div>
+                                <div class="mb-3">
+                                    <label for="{{ form.message.id_for_label }}" class="form-label">Message *</label>
+                                    {{ form.message }}
+                                </div>
+                                
+                                <div class="mt-4 text-center">
+                                    <button type="submit" class="btn-submit">
+                                        <i class="fas fa-paper-plane me-2"></i>Send Message
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Map Section -->
+        <div class="map-section">
+            <div class="container px-0">
+                <div class="map-container">
+                    <iframe 
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3988.837662382626!2d36.78827631533087!3d-1.2654447359731246!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x182f1a6bf7445dc1%3A0x940b62a3c8efde4c!2sNairobi%2C%20Kenya!5e0!3m2!1sen!2sus!4v1620000000000!5m2!1sen!2sus" 
+                        style="border:0;" 
+                        allowfullscreen="" 
+                        loading="lazy">
+                    </iframe>
+                    <div class="map-overlay">
+                        <div class="map-marker">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div class="text-center p-3" style="background: white; border-radius: 8px; margin-top: 20px; max-width: 90%;">
+                            <h5 class="mb-1">Nairobi, Kenya</h5>
+                            <p class="small text-muted mb-0">Available for local and international projects</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</section>
+
+<!-- Success Modal -->
+<div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="successModalLabel">Message Sent!</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center p-5">
+                <div class="mb-4">
+                    <div class="success-checkmark">
+                        <div class="check-icon">
+                            <span class="icon-line line-tip"></span>
+                            <span class="icon-line line-long"></span>
+                            <div class="icon-circle"></div>
+                            <div class="icon-fix"></div>
+                        </div>
+                    </div>
+                </div>
+                <h4 class="mb-3">Thank You!</h4>
+                <p class="mb-4">Your message has been sent successfully. I'll get back to you as soon as possible, usually within 24-48 hours.</p>
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Form submission handling - Let Django handle the form submission naturally
+        const contactForm = document.getElementById('contactForm');
+        if (contactForm) {
+            contactForm.addEventListener('submit', function(e) {
+                // Allow normal form submission to Django
+                // The success message will be handled by Django messages framework
+            });
+        }
+        
+        // Add smooth scrolling to all links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    });
+</script>
+{% endblock %}

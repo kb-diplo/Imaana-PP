@@ -1,0 +1,126 @@
+{% extends "custom_admin/base.html" %}
+
+{% block page_title %}Message from {{ original.name }}{% endblock %}
+
+{% block content %}
+<div class="content-card">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h3 class="mb-0">
+            <i class="fas fa-envelope"></i> Message Details
+        </h3>
+        <a href="/custom-admin/portfolio/contactmessage/" class="btn btn-outline-secondary">
+            <i class="fas fa-arrow-left"></i> Back to Messages
+        </a>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">{{ original.subject }}</h5>
+                    <small class="text-muted">Received on {{ original.created_at|date:"M d, Y \a\t H:i" }}</small>
+                </div>
+                <div class="card-body">
+                    <div class="message-content">
+                        <p style="white-space: pre-wrap; line-height: 1.6;">{{ original.message }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-4">
+            <div class="card">
+                <div class="card-header">
+                    <h6 class="mb-0"><i class="fas fa-user"></i> Contact Information</h6>
+                </div>
+                <div class="card-body">
+                    <div class="contact-info">
+                        <div class="info-item mb-3">
+                            <strong>Name:</strong><br>
+                            {{ original.name }}
+                        </div>
+                        <div class="info-item mb-3">
+                            <strong>Email:</strong><br>
+                            <a href="mailto:{{ original.email }}">{{ original.email }}</a>
+                        </div>
+                        {% if original.phone %}
+                        <div class="info-item mb-3">
+                            <strong>Phone:</strong><br>
+                            <a href="tel:{{ original.phone }}">{{ original.phone }}</a>
+                        </div>
+                        {% endif %}
+                        {% if original.service_interest %}
+                        <div class="info-item mb-3">
+                            <strong>Service Interest:</strong><br>
+                            {{ original.service_interest }}
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card mt-3">
+                <div class="card-header">
+                    <h6 class="mb-0"><i class="fas fa-cog"></i> Actions</h6>
+                </div>
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="d-grid gap-2">
+                            <a href="mailto:{{ original.email }}?subject=Re: {{ original.subject }}" class="btn btn-primary">
+                                <i class="fas fa-reply"></i> Reply via Email
+                            </a>
+                            
+                            {% if not original.is_responded %}
+                            <button type="submit" name="mark_responded" class="btn btn-success">
+                                <i class="fas fa-check"></i> Mark as Responded
+                            </button>
+                            {% else %}
+                            <button type="submit" name="mark_unresponded" class="btn btn-outline-warning">
+                                <i class="fas fa-undo"></i> Mark as Unresponded
+                            </button>
+                            {% endif %}
+                            
+                            <a href="tel:{{ original.phone }}" class="btn btn-outline-info">
+                                <i class="fas fa-phone"></i> Call
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.message-content {
+    background: #f8f9fa;
+    padding: 1.5rem;
+    border-radius: 10px;
+    border-left: 4px solid var(--primary-color);
+    font-size: 1.05rem;
+}
+
+.info-item {
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.info-item:last-child {
+    border-bottom: none;
+}
+
+.card {
+    border-radius: 15px;
+    border: none;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+}
+
+.card-header {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    color: white;
+    border-radius: 15px 15px 0 0 !important;
+    border: none;
+}
+</style>
+{% endblock %}

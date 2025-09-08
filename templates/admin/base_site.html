@@ -1,0 +1,344 @@
+{% extends "admin/base.html" %}
+{% load static %}
+
+{% block title %}{{ title }} | {{ site_title|default:_('Django site admin') }}{% endblock %}
+
+{% block extrahead %}
+{{ block.super }}
+<!-- Only apply custom styling if this is the custom admin -->
+{% if '/custom-admin/' in request.path %}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+<style>
+    /* Custom Admin Styling to match site design */
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        min-height: 100vh;
+    }
+    
+    #header {
+        background: linear-gradient(135deg, #ff6b6b 0%, #ff8e8e 100%);
+        border-bottom: none;
+        box-shadow: 0 2px 20px rgba(255, 107, 107, 0.3);
+    }
+    
+    #branding h1, #branding h1 a:link, #branding h1 a:visited {
+        color: white;
+        font-weight: 600;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    #user-tools {
+        color: white;
+        font-weight: 500;
+    }
+    
+    #user-tools a {
+        color: white;
+        text-decoration: none;
+        padding: 8px 15px;
+        border-radius: 20px;
+        transition: all 0.3s ease;
+        margin-left: 10px;
+    }
+    
+    #user-tools a:hover {
+        background: rgba(255,255,255,0.2);
+        transform: translateY(-1px);
+    }
+    
+    .breadcrumbs {
+        background: white;
+        border: none;
+        border-radius: 10px;
+        margin: 20px;
+        padding: 15px 25px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+    
+    .breadcrumbs a {
+        color: #ff6b6b;
+        text-decoration: none;
+        font-weight: 500;
+    }
+    
+    .breadcrumbs a:hover {
+        color: #ff4757;
+    }
+    
+    #content {
+        margin: 0 20px 20px 20px;
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 5px 25px rgba(0,0,0,0.1);
+        overflow: hidden;
+    }
+    
+    #content-main {
+        padding: 30px;
+    }
+    
+    .module h2, .module caption, .inline-group h2 {
+        background: linear-gradient(135deg, #ff6b6b 0%, #ff8e8e 100%);
+        color: white;
+        font-weight: 600;
+        padding: 15px 20px;
+        margin: 0;
+        border-radius: 8px 8px 0 0;
+    }
+    
+    .results {
+        border: none;
+        border-radius: 0 0 8px 8px;
+        overflow: hidden;
+    }
+    
+    .results th {
+        background: #f8f9fa;
+        color: #495057;
+        font-weight: 600;
+        padding: 15px;
+        border-bottom: 2px solid #dee2e6;
+    }
+    
+    .results td {
+        padding: 12px 15px;
+        border-bottom: 1px solid #f1f3f4;
+    }
+    
+    .results tr:hover {
+        background: #f8f9fa;
+    }
+    
+    .button, input[type=submit], input[type=button], .submit-row input, .submit-row a {
+        background: linear-gradient(135deg, #ff6b6b 0%, #ff8e8e 100%);
+        border: none;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 25px;
+        font-weight: 500;
+        text-decoration: none;
+        display: inline-block;
+        transition: all 0.3s ease;
+        box-shadow: 0 3px 10px rgba(255, 107, 107, 0.3);
+    }
+    
+    .button:hover, input[type=submit]:hover, input[type=button]:hover, .submit-row input:hover, .submit-row a:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
+        color: white;
+    }
+    
+    .button.default, input[type=submit].default, .submit-row input.default {
+        background: linear-gradient(135deg, #2ed573 0%, #7bed9f 100%);
+        box-shadow: 0 3px 10px rgba(46, 213, 115, 0.3);
+    }
+    
+    .button.default:hover, input[type=submit].default:hover, .submit-row input.default:hover {
+        box-shadow: 0 5px 15px rgba(46, 213, 115, 0.4);
+    }
+    
+    .addlink, .changelink, .deletelink {
+        color: #ff6b6b;
+        font-weight: 500;
+        text-decoration: none;
+    }
+    
+    .addlink:hover, .changelink:hover, .deletelink:hover {
+        color: #ff4757;
+    }
+    
+    .addlink:before {
+        content: "➕ ";
+    }
+    
+    .changelink:before {
+        content: "✏️ ";
+    }
+    
+    .deletelink:before {
+        content: "🗑️ ";
+    }
+    
+    .dashboard-stats {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+        margin: 30px 0;
+    }
+    
+    .stat-card {
+        background: linear-gradient(135deg, #ff6b6b 0%, #ff8e8e 100%);
+        color: white;
+        padding: 25px;
+        border-radius: 15px;
+        text-align: center;
+        box-shadow: 0 5px 20px rgba(255, 107, 107, 0.3);
+        transition: transform 0.3s ease;
+    }
+    
+    .stat-card:hover {
+        transform: translateY(-5px);
+    }
+    
+    .stat-number {
+        font-size: 2.5rem;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+    
+    .stat-label {
+        font-size: 1rem;
+        opacity: 0.9;
+    }
+    
+    .welcome-message {
+        background: linear-gradient(135deg, #ff6b6b 0%, #ff8e8e 100%);
+        color: white;
+        padding: 30px;
+        border-radius: 15px;
+        text-align: center;
+        margin-bottom: 30px;
+        box-shadow: 0 5px 25px rgba(255, 107, 107, 0.3);
+    }
+    
+    .welcome-message h1 {
+        margin: 0 0 10px 0;
+        font-size: 2.2rem;
+        font-weight: 600;
+    }
+    
+    .welcome-message p {
+        margin: 0;
+        font-size: 1.1rem;
+        opacity: 0.9;
+    }
+    
+    .quick-actions {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+        margin: 30px 0;
+    }
+    
+    .action-card {
+        background: white;
+        border: 2px solid #f1f3f4;
+        border-radius: 15px;
+        padding: 25px;
+        text-align: center;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        color: #333;
+        box-shadow: 0 3px 15px rgba(0,0,0,0.05);
+    }
+    
+    .action-card:hover {
+        border-color: #ff6b6b;
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(255, 107, 107, 0.2);
+        text-decoration: none;
+        color: #333;
+    }
+    
+    .action-icon {
+        font-size: 3rem;
+        margin-bottom: 15px;
+    }
+    
+    .action-title {
+        font-size: 1.3rem;
+        font-weight: 600;
+        margin-bottom: 10px;
+        color: #ff6b6b;
+    }
+    
+    .action-desc {
+        color: #6c757d;
+        font-size: 0.95rem;
+    }
+    
+    .form-row {
+        margin-bottom: 20px;
+    }
+    
+    .form-row label {
+        font-weight: 600;
+        color: #495057;
+        margin-bottom: 8px;
+        display: block;
+    }
+    
+    input[type="text"], input[type="email"], input[type="number"], select, textarea {
+        border: 2px solid #e9ecef;
+        border-radius: 8px;
+        padding: 12px 15px;
+        font-size: 1rem;
+        transition: border-color 0.3s ease;
+        width: 100%;
+        max-width: 400px;
+    }
+    
+    input[type="text"]:focus, input[type="email"]:focus, input[type="number"]:focus, select:focus, textarea:focus {
+        border-color: #ff6b6b;
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.1);
+    }
+    
+    .errorlist {
+        background: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+        border-radius: 8px;
+        padding: 10px 15px;
+        margin: 10px 0;
+    }
+    
+    .messagelist {
+        margin: 0 0 20px 0;
+        padding: 0;
+        list-style: none;
+    }
+    
+    .messagelist li {
+        background: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+        border-radius: 8px;
+        padding: 15px;
+        margin-bottom: 10px;
+    }
+    
+    .messagelist .error {
+        background: #f8d7da;
+        color: #721c24;
+        border-color: #f5c6cb;
+    }
+    
+    .messagelist .warning {
+        background: #fff3cd;
+        color: #856404;
+        border-color: #ffeaa7;
+    }
+</style>
+{% endif %}
+{% endblock %}
+
+{% if '/custom-admin/' in request.path %}
+{% block branding %}
+<h1 id="site-name">
+    <a href="{% url 'portfolio_admin:index' %}">
+        <i class="fas fa-camera-retro"></i> IMA ANA Portfolio Admin
+    </a>
+</h1>
+{% endblock %}
+
+{% block nav-global %}
+<div style="float: right; margin-top: 10px;">
+    <a href="/" style="color: white; text-decoration: none; margin-right: 15px;">
+        <i class="fas fa-home"></i> View Site
+    </a>
+</div>
+{% endblock %}
+{% endif %}

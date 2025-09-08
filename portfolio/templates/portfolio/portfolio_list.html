@@ -1,0 +1,350 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %}Portfolio - Elsy{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Portfolio Section */
+    .portfolio-section {
+        padding: 100px 0 80px;
+    }
+    
+    .page-header {
+        text-align: center;
+        margin-bottom: 50px;
+    }
+    
+    .page-header h1 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 15px;
+    }
+    
+    .page-header p {
+        color: #6c757d;
+        font-size: 1.1rem;
+        max-width: 700px;
+        margin: 0 auto;
+    }
+    
+    /* Filter Buttons */
+    .filter-buttons {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin-bottom: 40px;
+    }
+    
+    .filter-btn {
+        background: none;
+        border: none;
+        color: #6c757d;
+        padding: 8px 20px;
+        margin: 5px;
+        cursor: pointer;
+        font-weight: 500;
+        border-radius: 30px;
+        transition: all 0.3s ease;
+    }
+    
+    .filter-btn:hover, .filter-btn.active {
+        background-color: #ff6b6b;
+        color: white;
+    }
+    
+    /* Portfolio Grid */
+    .portfolio-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 30px;
+    }
+    
+    .portfolio-item {
+        position: relative;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .portfolio-item:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+    }
+    
+    .portfolio-img {
+        width: 100%;
+        height: 250px;
+        object-fit: cover;
+        display: block;
+    }
+    
+    .portfolio-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.7);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        padding: 20px;
+        text-align: center;
+        color: white;
+    }
+    
+    .portfolio-item:hover .portfolio-overlay {
+        opacity: 1;
+    }
+    
+    .portfolio-category {
+        display: inline-block;
+        background: rgba(255, 107, 107, 0.9);
+        color: white;
+        padding: 5px 15px;
+        border-radius: 30px;
+        font-size: 0.8rem;
+        margin-bottom: 15px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+    
+    .portfolio-title {
+        font-size: 1.3rem;
+        font-weight: 600;
+        margin-bottom: 10px;
+    }
+    
+    .portfolio-description {
+        font-size: 0.9rem;
+        margin-bottom: 20px;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+    
+    .portfolio-link {
+        display: inline-flex;
+        align-items: center;
+        color: white;
+        text-decoration: none;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+    
+    .portfolio-link i {
+        margin-left: 5px;
+        transition: transform 0.3s ease;
+    }
+    
+    .portfolio-link:hover {
+        color: #ff6b6b;
+    }
+    
+    .portfolio-link:hover i {
+        transform: translateX(5px);
+    }
+    
+    /* Pagination */
+    .pagination {
+        margin-top: 50px;
+        justify-content: center;
+    }
+    
+    .page-link {
+        color: #ff6b6b;
+        border: 1px solid #dee2e6;
+        margin: 0 5px;
+        border-radius: 5px !important;
+        padding: 8px 15px;
+    }
+    
+    .page-item.active .page-link {
+        background-color: #ff6b6b;
+        border-color: #ff6b6b;
+    }
+    
+    .page-link:hover {
+        color: #ff5252;
+        background-color: #f8f9fa;
+        border-color: #dee2e6;
+    }
+    
+    /* No Results */
+    .no-results {
+        text-align: center;
+        grid-column: 1 / -1;
+        padding: 50px 0;
+    }
+    
+    .no-results i {
+        font-size: 3rem;
+        color: #dee2e6;
+        margin-bottom: 20px;
+    }
+    
+    .no-results h3 {
+        margin-bottom: 15px;
+    }
+    
+    .no-results p {
+        color: #6c757d;
+        margin-bottom: 20px;
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+        .portfolio-grid {
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        }
+        
+        .portfolio-img {
+            height: 200px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Portfolio Section -->
+<section class="portfolio-section">
+    <div class="container">
+        <!-- Page Header -->
+        <div class="page-header">
+            <h1>My Portfolio</h1>
+            <p>Explore my latest projects and creative work. Each piece represents a unique challenge and creative solution.</p>
+        </div>
+        
+        <!-- Filter Buttons -->
+        <div class="filter-buttons">
+            <button class="filter-btn active" data-filter="all">All Work</button>
+            <button class="filter-btn" data-filter="fashion">Fashion</button>
+            <button class="filter-btn" data-filter="beauty">Beauty</button>
+            <button class="filter-btn" data-filter="lifestyle">Lifestyle</button>
+            <button class="filter-btn" data-filter="commercial">Commercial</button>
+        </div>
+        
+        <!-- Portfolio Grid -->
+        <div class="portfolio-grid">
+            {% for item in portfolio_items %}
+            <div class="portfolio-item" data-category="{{ item.category|lower }}">
+                {% if item.main_image %}
+                <img src="{{ item.main_image.url }}" alt="{{ item.title }}" class="portfolio-img">
+                {% else %}
+                <img src="{% static 'img/portfolio-placeholder.jpg' %}" alt="{{ item.title }}" class="portfolio-img">
+                {% endif %}
+                
+                <div class="portfolio-overlay">
+                    <span class="portfolio-category">{{ item.get_category_display }}</span>
+                    <h3 class="portfolio-title">{{ item.title }}</h3>
+                    <p class="portfolio-description">
+                        {% if item.description %}
+                            {{ item.description|truncatewords:20 }}
+                        {% else %}
+                            No description available.
+                        {% endif %}
+                    </p>
+                    <a href="{% url 'portfolio:detail' item.slug %}" class="portfolio-link">
+                        View Project <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+            {% empty %}
+            <div class="no-results">
+                <i class="far fa-folder-open"></i>
+                <h3>No Portfolio Items Found</h3>
+                <p>There are currently no portfolio items to display. Please check back later.</p>
+                <a href="{% url 'home' %}" class="btn btn-outline-primary">Return Home</a>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <!-- Pagination -->
+        {% if is_paginated %}
+        <nav aria-label="Portfolio pagination">
+            <ul class="pagination">
+                {% if page_obj.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page=1{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}">&laquo; First</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}">Previous</a>
+                    </li>
+                {% endif %}
+                
+                {% for num in page_obj.paginator.page_range %}
+                    {% if page_obj.number == num %}
+                        <li class="page-item active">
+                            <span class="page-link">{{ num }}</span>
+                        </li>
+                    {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ num }}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}">{{ num }}</a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+                
+                {% if page_obj.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}">Next</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}">Last &raquo;</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Filter functionality
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        const portfolioItems = document.querySelectorAll('.portfolio-item');
+        
+        filterButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const filter = this.getAttribute('data-filter');
+                
+                // Update active button
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                this.classList.add('active');
+                
+                // Filter items
+                portfolioItems.forEach(item => {
+                    const category = item.getAttribute('data-category');
+                    
+                    if (filter === 'all' || category === filter) {
+                        item.style.display = 'block';
+                        setTimeout(() => {
+                            item.style.opacity = '1';
+                            item.style.transform = 'scale(1)';
+                        }, 10);
+                    } else {
+                        item.style.opacity = '0';
+                        item.style.transform = 'scale(0.8)';
+                        setTimeout(() => {
+                            item.style.display = 'none';
+                        }, 300);
+                    }
+                });
+            });
+        });
+        
+        // Initialize items
+        portfolioItems.forEach(item => {
+            item.style.transition = 'all 0.3s ease';
+        });
+    });
+</script>
+{% endblock %}

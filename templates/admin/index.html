@@ -1,0 +1,128 @@
+{% extends "admin/base_site.html" %}
+{% load i18n static %}
+
+{% block extrahead %}
+{{ block.super }}
+{% endblock %}
+
+{% block content %}
+{% if '/custom-admin/' in request.path %}
+<div class="welcome-message">
+    <h1>Portfolio Admin</h1>
+    <p>Simple portfolio management</p>
+</div>
+
+<div class="quick-actions">
+    <a href="/custom-admin/portfolio/profileimage/" class="action-card">
+        <div class="action-icon">📷</div>
+        <div class="action-title">Profile Photo</div>
+        <div class="action-desc">Change main profile picture</div>
+    </a>
+    
+    <a href="/custom-admin/portfolio/galleryimage/" class="action-card">
+        <div class="action-icon">🖼️</div>
+        <div class="action-title">Gallery</div>
+        <div class="action-desc">Add/remove gallery photos</div>
+    </a>
+    
+    <a href="/custom-admin/portfolio/sitesettings/" class="action-card">
+        <div class="action-icon">✏️</div>
+        <div class="action-title">Text & Links</div>
+        <div class="action-desc">Update titles and social media</div>
+    </a>
+    
+    <a href="/custom-admin/portfolio/contactmessage/" class="action-card">
+        <div class="action-icon">💬</div>
+        <div class="action-title">Messages</div>
+        <div class="action-desc">View client messages</div>
+    </a>
+</div>
+
+{% if app_list %}
+    <div style="margin-top: 40px;">
+        <h2 style="color: #ff6b6b; font-size: 1.5rem; margin-bottom: 20px;">
+            <i class="fas fa-cogs"></i> All Admin Sections
+        </h2>
+        
+        {% for app in app_list %}
+            <div class="module" style="margin-bottom: 30px;">
+                <table>
+                    <caption>
+                        <a href="{{ app.app_url }}" class="section" title="{% blocktrans with name=app.name %}Models in the {{ name }} application{% endblocktrans %}">
+                            {{ app.name }}
+                        </a>
+                    </caption>
+                    {% for model in app.models %}
+                        <tr class="model-{{ model.object_name|lower }}">
+                            {% if model.admin_url %}
+                                <th scope="row"><a href="{{ model.admin_url }}">{{ model.name }}</a></th>
+                            {% else %}
+                                <th scope="row">{{ model.name }}</th>
+                            {% endif %}
+
+                            {% if model.add_url %}
+                                <td><a href="{{ model.add_url }}" class="addlink">{% trans 'Add' %}</a></td>
+                            {% else %}
+                                <td>&nbsp;</td>
+                            {% endif %}
+
+                            {% if model.admin_url %}
+                                {% if model.view_only %}
+                                    <td><a href="{{ model.admin_url }}" class="viewlink">{% trans 'View' %}</a></td>
+                                {% else %}
+                                    <td><a href="{{ model.admin_url }}" class="changelink">{% trans 'Change' %}</a></td>
+                                {% endif %}
+                            {% else %}
+                                <td>&nbsp;</td>
+                            {% endif %}
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <p>{% trans "You don't have permission to view or edit anything." %}</p>
+{% endif %}
+{% else %}
+<!-- Default Django admin index for /admin/ -->
+{% if app_list %}
+    {% for app in app_list %}
+        <div class="app-{{ app.app_label }} module">
+            <table>
+                <caption>
+                    <a href="{{ app.app_url }}" class="section" title="{% blocktrans with name=app.name %}Models in the {{ name }} application{% endblocktrans %}">{{ app.name }}</a>
+                </caption>
+                {% for model in app.models %}
+                    <tr class="model-{{ model.object_name|lower }}">
+                        {% if model.admin_url %}
+                            <th scope="row"><a href="{{ model.admin_url }}">{{ model.name }}</a></th>
+                        {% else %}
+                            <th scope="row">{{ model.name }}</th>
+                        {% endif %}
+
+                        {% if model.add_url %}
+                            <td><a href="{{ model.add_url }}" class="addlink">{% trans 'Add' %}</a></td>
+                        {% else %}
+                            <td>&nbsp;</td>
+                        {% endif %}
+
+                        {% if model.admin_url %}
+                            {% if model.view_only %}
+                                <td><a href="{{ model.admin_url }}" class="viewlink">{% trans 'View' %}</a></td>
+                            {% else %}
+                                <td><a href="{{ model.admin_url }}" class="changelink">{% trans 'Change' %}</a></td>
+                            {% endif %}
+                        {% else %}
+                            <td>&nbsp;</td>
+                        {% endif %}
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    {% endfor %}
+{% else %}
+    <p>{% trans "You don't have permission to view or edit anything." %}</p>
+{% endif %}
+{% endif %}
+{% endblock %}

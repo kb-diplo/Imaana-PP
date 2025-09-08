@@ -1,0 +1,225 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %}About - IMA ANA{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/about.css' %}">
+{% endblock %}
+
+{% block content %}
+<!-- About Section -->
+<section class="about-section">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <div class="about-image">
+                    {% if profile_image %}
+                        <img src="{{ profile_image.image.url }}" alt="{{ profile_image.title }}" class="img-fluid rounded shadow">
+                    {% else %}
+                        <div class="image-placeholder">
+                            <i class="fas fa-user-circle"></i>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="about-content">
+                    <h2>About Me</h2>
+                    <p>Hello! I'm IMA ANA, a passionate digital creator and professional model based in Nairobi, Kenya. With over 2 years of experience in the industry, I've had the privilege of working with renowned brands and talented creatives to bring compelling visual stories to life.</p>
+                    <p>My journey in the creative industry began with a passion for visual storytelling and self-expression. Since then, I've developed a keen eye for detail and a deep understanding of what makes content engaging and authentic, which I bring to every project I work on.</p>
+                    <p>When I'm not in front of the camera or working on creative projects, I'm exploring new trends in digital content and connecting with my community. I believe in continuous learning and pushing creative boundaries to deliver exceptional results for my clients.</p>
+                    
+                    <div class="mt-4">
+                        <a href="{% url 'contact' %}" class="btn btn-primary me-2">Get in Touch</a>
+                        <a href="{% url 'home' %}#gallery" class="btn btn-outline-primary">View My Gallery</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Skills Section -->
+        <div class="skills-section">
+            <div class="row">
+                <div class="col-md-6">
+                    <h3 class="mb-4">My Skills</h3>
+                    
+                    <div class="skill-item">
+                        <div class="skill-info">
+                            <span class="skill-name">Fashion Modeling</span>
+                            <span class="skill-percent">95%</span>
+                        </div>
+                        <div class="progress">
+                            <div class="progress-bar" role="progressbar" style="width: 95%" aria-valuenow="95" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="skill-item">
+                        <div class="skill-info">
+                            <span class="skill-name">Portrait Photography</span>
+                            <span class="skill-percent">90%</span>
+                        </div>
+                        <div class="progress">
+                            <div class="progress-bar" role="progressbar" style="width: 90%" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="skill-item">
+                        <div class="skill-info">
+                            <span class="skill-name">Creative Direction</span>
+                            <span class="skill-percent">85%</span>
+                        </div>
+                        <div class="progress">
+                            <div class="progress-bar" role="progressbar" style="width: 85%" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6">
+                    <div class="skill-item">
+                        <div class="skill-info">
+                            <span class="skill-name">Photo Editing</span>
+                            <span class="skill-percent">88%</span>
+                        </div>
+                        <div class="progress">
+                            <div class="progress-bar" role="progressbar" style="width: 88%" aria-valuenow="88" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="skill-item">
+                        <div class="skill-info">
+                            <span class="skill-name">Social Media Content Creation</span>
+                            <span class="skill-percent">92%</span>
+                        </div>
+                        <div class="progress">
+                            <div class="progress-bar" role="progressbar" style="width: 92%" aria-valuenow="92" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="skill-item">
+                        <div class="skill-info">
+                            <span class="skill-name">Brand Collaboration</span>
+                            <span class="skill-percent">87%</span>
+                        </div>
+                        <div class="progress">
+                            <div class="progress-bar" role="progressbar" style="width: 87%" aria-valuenow="87" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Experience & Education -->
+        <div class="experience-section">
+            <div class="row">
+                <div class="col-12">
+                    <h3 class="mb-4">Experience</h3>
+                    
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <h4>Freelance Digital Creator & Model</h4>
+                            <span class="text-muted">Self-Employed | 2020 - Present</span>
+                            <p>Working with various clients to create engaging digital content and model for brands. Specializing in creative direction, content creation, and brand representation.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</section>
+
+<!-- Testimonial Section -->
+<section class="testimonial-section">
+    <div class="container">
+        <div class="section-title text-center mb-5">
+            <h2>What Clients Say</h2>
+            <p>Hear from some of the amazing people I've worked with</p>
+        </div>
+        
+        <div class="row">
+            <div class="col-md-4">
+                <div class="testimonial-card">
+                    <p class="testimonial-text">Working with Elsy was an absolute pleasure. Her professionalism and creativity brought our brand vision to life in ways we couldn't have imagined.</p>
+                    <div class="testimonial-author">
+                        <div class="author-info">
+                            <h5>Grace Wanjiku</h5>
+                            <span>Brand Manager</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="testimonial-card">
+                    <p class="testimonial-text">Elsy's attention to detail and ability to understand our brand's aesthetic made her the perfect collaborator for our campaign. The results exceeded our expectations!</p>
+                    <div class="testimonial-author">
+                        <div class="author-info">
+                            <h5>David Kimani</h5>
+                            <span>Creative Director</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="testimonial-card">
+                    <p class="testimonial-text">Professional, punctual, and incredibly talented. Elsy brought so much energy and creativity to our shoot. I would work with her again in a heartbeat!</p>
+                    <div class="testimonial-author">
+                        <div class="author-info">
+                            <h5>Faith Njeri</h5>
+                            <span>Photography Client</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- CTA Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="cta-about">
+            <h2>Let's Work Together</h2>
+            <p class="lead mb-4">I'm always excited to collaborate on new projects and creative ideas.</p>
+            <a href="{% url 'contact' %}" class="btn btn-primary btn-lg">Get in Touch</a>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Animate skill bars on scroll
+    document.addEventListener('DOMContentLoaded', function() {
+        const skillBars = document.querySelectorAll('.progress-bar');
+        
+        const animateSkills = () => {
+            skillBars.forEach(bar => {
+                const width = bar.style.width;
+                bar.style.width = '0';
+                setTimeout(() => {
+                    bar.style.width = width;
+                }, 100);
+            });
+        };
+        
+        // Animate when skills section is in viewport
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    animateSkills();
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.5 });
+        
+        const skillsSection = document.querySelector('.skills-section');
+        if (skillsSection) {
+            observer.observe(skillsSection);
+        }
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,557 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %}{{ portfolio_item.title }} - Elsy{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Portfolio Detail Section */
+    .portfolio-detail {
+        padding: 100px 0 80px;
+    }
+    
+    .portfolio-header {
+        text-align: center;
+        margin-bottom: 60px;
+    }
+    
+    .portfolio-category {
+        display: inline-block;
+        background: #ff6b6b;
+        color: white;
+        padding: 8px 20px;
+        border-radius: 30px;
+        font-size: 0.9rem;
+        margin-bottom: 20px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+    
+    .portfolio-title {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 20px;
+    }
+    
+    .portfolio-meta {
+        display: flex;
+        justify-content: center;
+        gap: 30px;
+        color: #6c757d;
+        margin-bottom: 30px;
+    }
+    
+    .meta-item {
+        display: flex;
+        align-items: center;
+    }
+    
+    .meta-item i {
+        margin-right: 8px;
+        color: #ff6b6b;
+    }
+    
+    /* Portfolio Gallery */
+    .portfolio-gallery {
+        margin-bottom: 60px;
+    }
+    
+    .main-image {
+        margin-bottom: 30px;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+    
+    .main-image img {
+        width: 100%;
+        height: auto;
+        display: block;
+        transition: transform 0.5s ease;
+    }
+    
+    .main-image:hover img {
+        transform: scale(1.03);
+    }
+    
+    .thumbnail-gallery {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+        gap: 15px;
+        margin-top: 15px;
+    }
+    
+    .thumbnail-item {
+        border-radius: 8px;
+        overflow: hidden;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        border: 2px solid transparent;
+    }
+    
+    .thumbnail-item:hover, .thumbnail-item.active {
+        border-color: #ff6b6b;
+    }
+    
+    .thumbnail-item img {
+        width: 100%;
+        height: 80px;
+        object-fit: cover;
+        display: block;
+    }
+    
+    /* Portfolio Content */
+    .portfolio-content {
+        margin-bottom: 60px;
+    }
+    
+    .section-title {
+        font-size: 1.8rem;
+        font-weight: 600;
+        margin-bottom: 25px;
+        position: relative;
+        padding-bottom: 15px;
+    }
+    
+    .section-title:after {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 60px;
+        height: 3px;
+        background: #ff6b6b;
+    }
+    
+    .portfolio-description {
+        line-height: 1.8;
+        margin-bottom: 30px;
+    }
+    
+    .portfolio-details {
+        background: #f8f9fa;
+        padding: 30px;
+        border-radius: 10px;
+        margin-top: 40px;
+    }
+    
+    .details-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+    
+    .details-list li {
+        margin-bottom: 15px;
+        display: flex;
+    }
+    
+    .detail-label {
+        font-weight: 600;
+        min-width: 120px;
+        color: #343a40;
+    }
+    
+    .detail-value {
+        color: #6c757d;
+    }
+    
+    /* Navigation */
+    .portfolio-navigation {
+        display: flex;
+        justify-content: space-between;
+        padding: 30px 0;
+        border-top: 1px solid #eee;
+        border-bottom: 1px solid #eee;
+        margin: 60px 0;
+    }
+    
+    .nav-item {
+        display: flex;
+        align-items: center;
+        color: #6c757d;
+        text-decoration: none;
+        transition: color 0.3s ease;
+    }
+    
+    .nav-item:hover {
+        color: #ff6b6b;
+    }
+    
+    .nav-item i {
+        margin: 0 10px;
+    }
+    
+    .nav-item.prev i {
+        order: -1;
+    }
+    
+    /* Related Projects */
+    .related-projects {
+        margin-top: 80px;
+    }
+    
+    .related-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 30px;
+        margin-top: 40px;
+    }
+    
+    .related-item {
+        position: relative;
+        border-radius: 10px;
+        overflow: hidden;
+    }
+    
+    .related-item img {
+        width: 100%;
+        height: 250px;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+    }
+    
+    .related-item:hover img {
+        transform: scale(1.05);
+    }
+    
+    .related-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.6);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        color: white;
+        text-align: center;
+        padding: 20px;
+    }
+    
+    .related-item:hover .related-overlay {
+        opacity: 1;
+    }
+    
+    .related-category {
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 10px;
+        color: #ff6b6b;
+    }
+    
+    .related-title {
+        font-size: 1.2rem;
+        font-weight: 600;
+        margin-bottom: 15px;
+    }
+    
+    /* CTA Section */
+    .cta-section {
+        background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('{% static 'img/cta-bg.jpg' %}');
+        background-size: cover;
+        background-position: center;
+        padding: 100px 0;
+        text-align: center;
+        color: white;
+        margin-top: 80px;
+        border-radius: 10px;
+        overflow: hidden;
+    }
+    
+    .cta-title {
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 20px;
+    }
+    
+    .cta-description {
+        font-size: 1.1rem;
+        max-width: 700px;
+        margin: 0 auto 30px;
+        opacity: 0.9;
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+        .portfolio-title {
+            font-size: 2rem;
+        }
+        
+        .portfolio-meta {
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .related-grid {
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        }
+        
+        .portfolio-navigation {
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .nav-item {
+            justify-content: center;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Portfolio Detail Section -->
+<section class="portfolio-detail">
+    <div class="container">
+        <!-- Portfolio Header -->
+        <div class="portfolio-header">
+            <span class="portfolio-category">{{ portfolio_item.get_category_display }}</span>
+            <h1 class="portfolio-title">{{ portfolio_item.title }}</h1>
+            <div class="portfolio-meta">
+                <div class="meta-item">
+                    <i class="far fa-calendar-alt"></i>
+                    <span>{{ portfolio_item.created|date:"F d, Y" }}</span>
+                </div>
+                <div class="meta-item">
+                    <i class="fas fa-tag"></i>
+                    <span>{{ portfolio_item.get_category_display }}</span>
+                </div>
+                {% if portfolio_item.client %}
+                <div class="meta-item">
+                    <i class="far fa-user"></i>
+                    <span>Client: {{ portfolio_item.client }}</span>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        
+        <!-- Portfolio Gallery -->
+        <div class="portfolio-gallery">
+            <div class="main-image">
+                {% if portfolio_item.main_image %}
+                <img src="{{ portfolio_item.main_image.url }}" alt="{{ portfolio_item.title }}" id="main-image">
+                {% else %}
+                <img src="{% static 'img/portfolio-placeholder.jpg' %}" alt="{{ portfolio_item.title }}" id="main-image">
+                {% endif %}
+            </div>
+            
+            {% if portfolio_item.images.all %}
+            <div class="thumbnail-gallery">
+                {% if portfolio_item.main_image %}
+                <div class="thumbnail-item active" data-image="{{ portfolio_item.main_image.url }}">
+                    <img src="{{ portfolio_item.main_image.url }}" alt="{{ portfolio_item.title }}">
+                </div>
+                {% endif %}
+                
+                {% for image in portfolio_item.images.all %}
+                <div class="thumbnail-item" data-image="{{ image.image.url }}">
+                    <img src="{{ image.image.url }}" alt="{{ image.caption|default:portfolio_item.title }}">
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+        
+        <!-- Portfolio Content -->
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="portfolio-content">
+                    <h2 class="section-title">Project Overview</h2>
+                    <div class="portfolio-description">
+                        {{ portfolio_item.description|linebreaks }}
+                    </div>
+                    
+                    {% if portfolio_item.challenge or portfolio_item.solution %}
+                    <div class="portfolio-details">
+                        {% if portfolio_item.challenge %}
+                        <h3>The Challenge</h3>
+                        <p>{{ portfolio_item.challenge|linebreaks }}</p>
+                        {% endif %}
+                        
+                        {% if portfolio_item.solution %}
+                        <h3 class="mt-4">The Solution</h3>
+                        <p>{{ portfolio_item.solution|linebreaks }}</p>
+                        {% endif %}
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <div class="col-lg-4">
+                <div class="portfolio-sidebar">
+                    <div class="portfolio-details">
+                        <h3 class="section-title">Project Details</h3>
+                        <ul class="details-list">
+                            <li>
+                                <span class="detail-label">Client:</span>
+                                <span class="detail-value">{{ portfolio_item.client|default:"Not specified" }}</span>
+                            </li>
+                            <li>
+                                <span class="detail-label">Category:</span>
+                                <span class="detail-value">{{ portfolio_item.get_category_display }}</span>
+                            </li>
+                            <li>
+                                <span class="detail-label">Date:</span>
+                                <span class="detail-value">{{ portfolio_item.created|date:"F d, Y" }}</span>
+                            </li>
+                            {% if portfolio_item.location %}
+                            <li>
+                                <span class="detail-label">Location:</span>
+                                <span class="detail-value">{{ portfolio_item.location }}</span>
+                            </li>
+                            {% endif %}
+                            {% if portfolio_item.website %}
+                            <li>
+                                <span class="detail-label">Website:</span>
+                                <a href="{{ portfolio_item.website }}" target="_blank" class="detail-value">Visit Site</a>
+                            </li>
+                            {% endif %}
+                        </ul>
+                        
+                        {% if portfolio_item.tags.all %}
+                        <div class="mt-4">
+                            <h4 class="mb-3">Tags</h4>
+                            <div class="tags">
+                                {% for tag in portfolio_item.tags.all %}
+                                <a href="#" class="btn btn-sm btn-outline-secondary me-2 mb-2">
+                                    {{ tag.name }}
+                                </a>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        {% endif %}
+                        
+                        <div class="mt-4">
+                            <h4 class="mb-3">Share</h4>
+                            <div class="social-share">
+                                <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri }}" 
+                                   target="_blank" class="btn btn-sm btn-outline-primary me-2 mb-2">
+                                    <i class="fab fa-facebook-f"></i>
+                                </a>
+                                <a href="https://twitter.com/intent/tweet?url={{ request.build_absolute_uri }}&text={{ portfolio_item.title|urlencode }}" 
+                                   target="_blank" class="btn btn-sm btn-outline-info me-2 mb-2">
+                                    <i class="fab fa-twitter"></i>
+                                </a>
+                                <a href="https://www.linkedin.com/shareArticle?mini=true&url={{ request.build_absolute_uri }}&title={{ portfolio_item.title|urlencode }}" 
+                                   target="_blank" class="btn btn-sm btn-outline-primary me-2 mb-2">
+                                    <i class="fab fa-linkedin-in"></i>
+                                </a>
+                                <a href="mailto:?subject={{ portfolio_item.title|urlencode }}&body=Check%20this%20out:%20{{ request.build_absolute_uri|urlencode }}" 
+                                   class="btn btn-sm btn-outline-secondary mb-2">
+                                    <i class="far fa-envelope"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Navigation -->
+        <div class="portfolio-navigation">
+            {% if previous_item %}
+            <a href="{% url 'portfolio:detail' previous_item.slug %}" class="nav-item prev">
+                <i class="fas fa-arrow-left"></i>
+                <span>Previous Project</span>
+            </a>
+            {% endif %}
+            
+            <a href="{% url 'portfolio:list' %}" class="nav-item">
+                <i class="fas fa-th"></i>
+            </a>
+            
+            {% if next_item %}
+            <a href="{% url 'portfolio:detail' next_item.slug %}" class="nav-item next">
+                <span>Next Project</span>
+                <i class="fas fa-arrow-right"></i>
+            </a>
+            {% endif %}
+        </div>
+        
+        <!-- Related Projects -->
+        {% if related_items %}
+        <div class="related-projects">
+            <h2 class="section-title">Related Projects</h2>
+            <div class="related-grid">
+                {% for item in related_items %}
+                <div class="related-item">
+                    {% if item.main_image %}
+                    <img src="{{ item.main_image.url }}" alt="{{ item.title }}">
+                    {% else %}
+                    <img src="{% static 'img/portfolio-placeholder.jpg' %}" alt="{{ item.title }}">
+                    {% endif %}
+                    
+                    <div class="related-overlay">
+                        <span class="related-category">{{ item.get_category_display }}</span>
+                        <h3 class="related-title">{{ item.title }}</h3>
+                        <a href="{% url 'portfolio:detail' item.slug %}" class="btn btn-sm btn-primary">View Project</a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="cta-section">
+    <div class="container">
+        <h2 class="cta-title">Have a project in mind?</h2>
+        <p class="cta-description">
+            I'm always excited to collaborate on new projects and creative ideas. 
+            Let's discuss how we can work together to bring your vision to life.
+        </p>
+        <a href="{% url 'contact' %}" class="btn btn-primary btn-lg">Get in Touch</a>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Image gallery functionality
+    document.addEventListener('DOMContentLoaded', function() {
+        const mainImage = document.getElementById('main-image');
+        const thumbnailItems = document.querySelectorAll('.thumbnail-item');
+        
+        if (thumbnailItems.length > 0) {
+            thumbnailItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    // Update main image
+                    const newImageSrc = this.getAttribute('data-image');
+                    mainImage.src = newImageSrc;
+                    
+                    // Update active thumbnail
+                    document.querySelectorAll('.thumbnail-item').forEach(thumb => {
+                        thumb.classList.remove('active');
+                    });
+                    this.classList.add('active');
+                });
+            });
+        }
+        
+        // Initialize image zoom on click (using basic zoom for now)
+        const mainImageContainer = document.querySelector('.main-image');
+        if (mainImageContainer) {
+            let isZoomed = false;
+            
+            mainImageContainer.addEventListener('click', function() {
+                if (isZoomed) {
+                    this.style.cursor = 'zoom-in';
+                    mainImage.style.transform = 'scale(1)';
+                } else {
+                    this.style.cursor = 'zoom-out';
+                    mainImage.style.transform = 'scale(1.5)';
+                }
+                isZoomed = !isZoomed;
+            });
+        }
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,287 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_urls static admin_modify %}
+
+{% block title %}Upload Multiple Photos | {{ site_title|default:_('Photo Manager') }}{% endblock %}
+
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+<a href="{% url 'admin:index' %}">{% trans 'Photo Manager' %}</a>
+&rsaquo; Upload Multiple Photos
+</div>
+{% endblock %}
+
+{% block content %}
+<style>
+    .upload-container {
+        max-width: 800px;
+        margin: 0 auto;
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        overflow: hidden;
+    }
+    .upload-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 30px;
+        text-align: center;
+    }
+    .upload-form {
+        padding: 40px;
+    }
+    .file-input-container {
+        border: 3px dashed #667eea;
+        border-radius: 12px;
+        padding: 40px;
+        text-align: center;
+        margin: 20px 0;
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+    .file-input-container:hover {
+        border-color: #764ba2;
+        background: #f8f9ff;
+    }
+    .file-input {
+        display: none;
+    }
+    .upload-icon {
+        font-size: 4em;
+        color: #667eea;
+        margin-bottom: 20px;
+    }
+    .upload-text {
+        font-size: 1.2em;
+        color: #333;
+        margin-bottom: 10px;
+    }
+    .upload-hint {
+        color: #666;
+        font-size: 0.9em;
+    }
+    .submit-btn {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border: none;
+        padding: 15px 40px;
+        border-radius: 8px;
+        font-size: 1.1em;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        margin-right: 15px;
+    }
+    .submit-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+    }
+    .cancel-btn {
+        background: #6c757d;
+        color: white;
+        border: none;
+        padding: 15px 30px;
+        border-radius: 8px;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+    .cancel-btn:hover {
+        background: #5a6268;
+        text-decoration: none;
+        color: white;
+    }
+    .instructions {
+        background: #f8f9fa;
+        border-radius: 8px;
+        padding: 25px;
+        margin-top: 30px;
+    }
+    .instructions h3 {
+        color: #667eea;
+        margin-bottom: 15px;
+    }
+    .instructions ul {
+        list-style: none;
+        padding: 0;
+    }
+    .instructions li {
+        padding: 8px 0;
+        border-bottom: 1px solid #e9ecef;
+    }
+    .instructions li:last-child {
+        border-bottom: none;
+    }
+    .instructions li:before {
+        content: "✓";
+        color: #28a745;
+        font-weight: bold;
+        margin-right: 10px;
+    }
+</style>
+
+<div class="upload-container">
+    <div class="upload-header">
+        <h1 style="margin: 0;">📸 Upload Multiple Photos</h1>
+        <p style="margin: 10px 0 0 0; opacity: 0.9;">Add multiple photos to your gallery at once</p>
+    </div>
+    
+    <div class="upload-form">
+        <form method="post" enctype="multipart/form-data" id="uploadForm">
+            {% csrf_token %}
+            
+            <div class="file-input-container" onclick="document.getElementById('id_images').click()">
+                <div class="upload-icon">⬆️</div>
+                <div class="upload-text">Click here to select photos</div>
+                <div class="upload-hint">Or drag and drop photos here</div>
+                <input type="file" name="images" id="id_images" class="file-input" multiple accept="image/*" required>
+            </div>
+            
+            <div id="selectedFiles" style="margin: 20px 0; display: none;">
+                <h4>Selected Photos:</h4>
+                <div id="fileList"></div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 30px;">
+                <button type="submit" class="submit-btn">Upload Photos</button>
+                <a href="../" class="cancel-btn">Cancel</a>
+            </div>
+        </form>
+        
+        <div class="instructions">
+            <h3>How to Upload Photos:</h3>
+            <ul>
+                <li>Click the upload area above or drag photos directly onto it</li>
+                <li>Select multiple photos by holding Ctrl (Windows) or Cmd (Mac)</li>
+                <li>Supported formats: JPG, PNG, GIF, WebP</li>
+                <li>You can upload up to 20 photos at once</li>
+                <li>Photos will be automatically named based on their filename</li>
+                <li>All photos will be active and visible on your website immediately</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<script>
+document.getElementById('id_images').addEventListener('change', function(e) {
+    const files = e.target.files;
+    const selectedFiles = document.getElementById('selectedFiles');
+    const fileList = document.getElementById('fileList');
+    
+    if (files.length > 0) {
+        selectedFiles.style.display = 'block';
+        fileList.innerHTML = '';
+        
+        for (let i = 0; i < files.length; i++) {
+            const fileItem = document.createElement('div');
+            fileItem.style.cssText = 'padding: 5px 0; border-bottom: 1px solid #eee;';
+            fileItem.textContent = files[i].name;
+            fileList.appendChild(fileItem);
+        }
+    } else {
+        selectedFiles.style.display = 'none';
+    }
+});
+
+// Drag and drop functionality
+const container = document.querySelector('.file-input-container');
+const fileInput = document.getElementById('id_images');
+
+container.addEventListener('dragover', function(e) {
+    e.preventDefault();
+    container.style.borderColor = '#764ba2';
+    container.style.background = '#f8f9ff';
+});
+
+container.addEventListener('dragleave', function(e) {
+    e.preventDefault();
+    container.style.borderColor = '#667eea';
+    container.style.background = 'white';
+});
+
+container.addEventListener('drop', function(e) {
+    e.preventDefault();
+    container.style.borderColor = '#667eea';
+    container.style.background = 'white';
+    
+    const files = e.dataTransfer.files;
+    fileInput.files = files;
+    fileInput.dispatchEvent(new Event('change'));
+});
+</script>
+
+<style>
+.module {
+    margin-bottom: 20px;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.module h2 {
+    background: #f8f8f8;
+    border-bottom: 1px solid #ddd;
+    margin: 0;
+    padding: 10px 15px;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.module ul {
+    padding: 15px;
+    margin: 0;
+}
+
+.form-row {
+    padding: 15px;
+}
+
+.form-row label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.form-row input[type="file"] {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.help {
+    color: #666;
+    font-size: 12px;
+    margin-top: 5px;
+}
+
+.submit-row {
+    background: #f8f8f8;
+    border-top: 1px solid #ddd;
+    padding: 10px 15px;
+    text-align: right;
+}
+
+.submit-row input[type="submit"] {
+    background: #417690;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+.submit-row input[type="submit"]:hover {
+    background: #205067;
+}
+
+.cancel-link {
+    color: #666;
+    text-decoration: none;
+    padding: 8px 16px;
+}
+
+.cancel-link:hover {
+    color: #333;
+}
+</style>
+{% endblock %}
