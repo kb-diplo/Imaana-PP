@@ -1,0 +1,281 @@
+{% extends "custom_admin/base.html" %}
+{% load i18n admin_urls static admin_modify %}
+
+{% block title %}
+    {% if original %}
+        {% blocktrans with name=opts.verbose_name %}Change {{ name }}{% endblocktrans %}
+    {% else %}
+        {% blocktrans with name=opts.verbose_name %}Add {{ name }}{% endblocktrans %}
+    {% endif %}
+{% endblock %}
+
+{% block breadcrumbs %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'custom_admin:index' %}">Home</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'custom_admin:portfolio_sitesettings_changelist' %}">Site Settings</a></li>
+        <li class="breadcrumb-item active" aria-current="page">
+            {% if original %}Edit{% else %}Add{% endif %}
+        </li>
+    </ol>
+</nav>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">
+                        <i class="fas fa-cog me-2"></i>
+                        {% if original %}
+                            Edit Site Settings
+                        {% else %}
+                            Add Site Settings
+                        {% endif %}
+                    </h4>
+                </div>
+                <div class="card-body">
+                    {% if errors %}
+                        <div class="alert alert-danger">
+                            <h5><i class="fas fa-exclamation-triangle me-2"></i>Please correct the errors below:</h5>
+                            {{ adminform.form.non_field_errors }}
+                        </div>
+                    {% endif %}
+
+                    <form method="post" enctype="multipart/form-data" novalidate>
+                        {% csrf_token %}
+                        
+                        {% if adminform.form.errors %}
+                            <div class="alert alert-danger">
+                                <strong>Please correct the following errors:</strong>
+                                {{ adminform.form.errors }}
+                            </div>
+                        {% endif %}
+
+                        <!-- Site Information Section -->
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-header bg-light">
+                                        <h5 class="mb-0">🏠 Site Information</h5>
+                                        <small class="text-muted">Basic site information and branding</small>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-6 mb-3">
+                                                <label for="{{ adminform.form.site_name.id_for_label }}" class="form-label">
+                                                    {{ adminform.form.site_name.label }}
+                                                </label>
+                                                {{ adminform.form.site_name }}
+                                                {% if adminform.form.site_name.errors %}
+                                                    <div class="text-danger small">{{ adminform.form.site_name.errors }}</div>
+                                                {% endif %}
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label for="{{ adminform.form.site_description.id_for_label }}" class="form-label">
+                                                    {{ adminform.form.site_description.label }}
+                                                </label>
+                                                {{ adminform.form.site_description }}
+                                                {% if adminform.form.site_description.errors %}
+                                                    <div class="text-danger small">{{ adminform.form.site_description.errors }}</div>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Hero Section -->
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-header bg-light">
+                                        <h5 class="mb-0">✨ Hero Section</h5>
+                                        <small class="text-muted">Main taglines displayed on your homepage</small>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-6 mb-3">
+                                                <label for="{{ adminform.form.hero_title.id_for_label }}" class="form-label">
+                                                    {{ adminform.form.hero_title.label }}
+                                                </label>
+                                                {{ adminform.form.hero_title }}
+                                                {% if adminform.form.hero_title.errors %}
+                                                    <div class="text-danger small">{{ adminform.form.hero_title.errors }}</div>
+                                                {% endif %}
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label for="{{ adminform.form.hero_subtitle.id_for_label }}" class="form-label">
+                                                    {{ adminform.form.hero_subtitle.label }}
+                                                </label>
+                                                {{ adminform.form.hero_subtitle }}
+                                                {% if adminform.form.hero_subtitle.errors %}
+                                                    <div class="text-danger small">{{ adminform.form.hero_subtitle.errors }}</div>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Social Media Links -->
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-header bg-light">
+                                        <h5 class="mb-0">📱 Social Media Links</h5>
+                                        <small class="text-muted">Your social media profile URLs</small>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-6 mb-3">
+                                                <label for="{{ adminform.form.instagram_url.id_for_label }}" class="form-label">
+                                                    <i class="fab fa-instagram me-1"></i>{{ adminform.form.instagram_url.label }}
+                                                </label>
+                                                {{ adminform.form.instagram_url }}
+                                                {% if adminform.form.instagram_url.errors %}
+                                                    <div class="text-danger small">{{ adminform.form.instagram_url.errors }}</div>
+                                                {% endif %}
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label for="{{ adminform.form.tiktok_url.id_for_label }}" class="form-label">
+                                                    <i class="fab fa-tiktok me-1"></i>{{ adminform.form.tiktok_url.label }}
+                                                </label>
+                                                {{ adminform.form.tiktok_url }}
+                                                {% if adminform.form.tiktok_url.errors %}
+                                                    <div class="text-danger small">{{ adminform.form.tiktok_url.errors }}</div>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Contact Information -->
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-header bg-light">
+                                        <h5 class="mb-0">📞 Contact Information</h5>
+                                        <small class="text-muted">Contact details for clients to reach you</small>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-6 mb-3">
+                                                <label for="{{ adminform.form.email.id_for_label }}" class="form-label">
+                                                    <i class="fas fa-envelope me-1"></i>{{ adminform.form.email.label }}
+                                                </label>
+                                                {{ adminform.form.email }}
+                                                {% if adminform.form.email.errors %}
+                                                    <div class="text-danger small">{{ adminform.form.email.errors }}</div>
+                                                {% endif %}
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label for="{{ adminform.form.phone.id_for_label }}" class="form-label">
+                                                    <i class="fas fa-phone me-1"></i>{{ adminform.form.phone.label }}
+                                                </label>
+                                                {{ adminform.form.phone }}
+                                                {% if adminform.form.phone.errors %}
+                                                    <div class="text-danger small">{{ adminform.form.phone.errors }}</div>
+                                                {% endif %}
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label for="{{ adminform.form.whatsapp_number.id_for_label }}" class="form-label">
+                                                    <i class="fab fa-whatsapp me-1"></i>{{ adminform.form.whatsapp_number.label }}
+                                                </label>
+                                                {{ adminform.form.whatsapp_number }}
+                                                {% if adminform.form.whatsapp_number.errors %}
+                                                    <div class="text-danger small">{{ adminform.form.whatsapp_number.errors }}</div>
+                                                {% endif %}
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label for="{{ adminform.form.address.id_for_label }}" class="form-label">
+                                                    <i class="fas fa-map-marker-alt me-1"></i>{{ adminform.form.address.label }}
+                                                </label>
+                                                {{ adminform.form.address }}
+                                                {% if adminform.form.address.errors %}
+                                                    <div class="text-danger small">{{ adminform.form.address.errors }}</div>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Form Actions -->
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="d-flex justify-content-between">
+                                    <a href="{% url 'custom_admin:portfolio_sitesettings_changelist' %}" class="btn btn-secondary">
+                                        <i class="fas fa-arrow-left me-1"></i>Back to List
+                                    </a>
+                                    <div>
+                                        <button type="submit" name="_save" class="btn btn-success me-2">
+                                            <i class="fas fa-save me-1"></i>Save
+                                        </button>
+                                        {% if original %}
+                                        <button type="submit" name="_continue" class="btn btn-primary">
+                                            <i class="fas fa-edit me-1"></i>Save and Continue Editing
+                                        </button>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.form-control, .form-select {
+    border: 1px solid #ddd;
+    border-radius: 0.375rem;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.875rem;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: #7c3aed;
+    box-shadow: 0 0 0 0.2rem rgba(124, 58, 237, 0.25);
+}
+
+.card {
+    border: 1px solid #e5e7eb;
+    border-radius: 0.5rem;
+}
+
+.card-header {
+    border-bottom: 1px solid #e5e7eb;
+    padding: 1rem 1.25rem;
+}
+
+.btn-primary {
+    background-color: #7c3aed;
+    border-color: #7c3aed;
+}
+
+.btn-primary:hover {
+    background-color: #6d28d9;
+    border-color: #6d28d9;
+}
+
+.text-danger {
+    color: #dc3545 !important;
+}
+
+.alert-danger {
+    color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+}
+</style>
+{% endblock %}
