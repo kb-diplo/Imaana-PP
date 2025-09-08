@@ -149,75 +149,70 @@
     .quote-section {
         background: #f8f9fa;
         padding: 80px 0;
-        border-radius: 10px;
+        border-radius: 0;
     }
     
     .section-title {
         text-align: center;
-        margin-bottom: 40px;
+        margin-bottom: 50px;
     }
     
     .section-title h2 {
-        font-size: 2rem;
+        font-size: 2.5rem;
         font-weight: 700;
-        margin-bottom: 15px;
+        color: #333;
+        margin-bottom: 20px;
     }
     
     .section-title p {
-        color: #6c757d;
+        font-size: 1.2rem;
+        color: #666;
         max-width: 600px;
         margin: 0 auto;
     }
     
-    /* Form Styles */
-    .quote-form {
+    /* Contact Info Styles */
+    .contact-info {
         background: white;
         padding: 40px;
         border-radius: 10px;
-        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
     }
     
-    .form-group {
-        margin-bottom: 1.5rem;
-    }
-    
-    .form-control {
-        padding: 12px 15px;
-        border: 1px solid #e1e5ee;
-        border-radius: 6px;
-        transition: all 0.3s ease;
-    }
-    
-    .form-control:focus {
-        border-color: #ff6b6b;
-        box-shadow: 0 0 0 0.2rem rgba(255, 107, 107, 0.25);
-    }
-    
-    textarea.form-control {
-        min-height: 120px;
-        resize: vertical;
-    }
-    
-    .btn-submit {
-        background: #ff6b6b;
-        color: white;
-        border: none;
-        padding: 12px 30px;
+    .email-contact h4 {
         font-weight: 600;
-        border-radius: 6px;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        width: 100%;
+        color: #333;
+        margin-bottom: 20px;
     }
     
-    .btn-submit:hover {
-        background: #ff5252;
+    .btn-primary {
+        background: linear-gradient(135deg, #ff6b6b 0%, #ff5252 100%);
+        border: none;
+        padding: 15px 40px;
+        border-radius: 50px;
+        font-size: 18px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+    
+    .btn-primary:hover {
         transform: translateY(-2px);
+        box-shadow: 0 10px 25px rgba(255, 107, 107, 0.3);
+        background: linear-gradient(135deg, #ff5252 0%, #ff4444 100%);
+    }
+    
+    .rate-card-info p {
+        font-size: 14px;
+        margin-bottom: 0;
     }
     
     /* FAQ Section */
     .faq-section {
         padding: 80px 0;
+        background: #fff;
+        margin-top: 40px;
     }
     
     .accordion-item {
@@ -277,232 +272,106 @@
     <div class="container">
         <!-- Page Header -->
         <div class="page-header">
-            <h1>My Packages</h1>
-            <p>Choose the perfect package that fits your needs. Each package is designed to provide the best value for your investment in quality content creation.</p>
+            <h1>Let's Collaborate</h1>
+            <p>Ready to create amazing content together? Reach out to discuss your project.</p>
         </div>
         
-        <!-- Pricing Tables -->
-        <div class="pricing-tables">
-            <!-- Basic Package -->
-            <div class="pricing-card">
-                <div class="pricing-header">
-                    <span class="pricing-category">Starter</span>
-                    <h2 class="pricing-title">Basic</h2>
-                    <p class="pricing-price">$299</p>
-                    <span class="pricing-duration">per session</span>
-                </div>
-                <div class="pricing-features">
-                    <ul class="feature-list">
-                        <li><i class="fas fa-check"></i> 1 Hour Photo Session</li>
-                        <li><i class="fas fa-check"></i> 15 High-Resolution Images</li>
-                        <li><i class="fas fa-check"></i> 2 Outfit Changes</li>
-                        <li><i class="fas fa-check"></i> 1 Location</li>
-                        <li><i class="fas fa-check"></i> Online Gallery</li>
-                        <li><i class="fas fa-check"></i> 7-Day Delivery</li>
-                    </ul>
-                </div>
-                <div class="pricing-cta">
-                    <button type="button" class="btn btn-outline-primary btn-pricing" data-bs-toggle="modal" data-bs-target="#quoteModal" data-package="Basic">
-                        Get Started
-                    </button>
-                </div>
-            </div>
-            
-            <!-- Standard Package -->
-            <div class="pricing-card" style="transform: scale(1.05); z-index: 1;">
-                <div class="popular-badge">Popular</div>
-                <div class="pricing-header" style="background: #fff5f5;">
-                    <span class="pricing-category">Most Popular</span>
-                    <h2 class="pricing-title">Standard</h2>
-                    <p class="pricing-price" style="color: #ff5252;">$499</p>
-                    <span class="pricing-duration">per session</span>
-                </div>
-                <div class="pricing-features">
-                    <ul class="feature-list">
-                        <li><i class="fas fa-check"></i> 2 Hour Photo Session</li>
-                        <li><i class="fas fa-check"></i> 30 High-Resolution Images</li>
-                        <li><i class="fas fa-check"></i> 4 Outfit Changes</li>
-                        <li><i class="fas fa-check"></i> 2 Locations</li>
-                        <li><i class="fas fa-check"></i> Online Gallery</li>
-                        <li><i class="fas fa-check"></i> 5-Day Delivery</li>
-                        <li><i class="fas fa-check"></i> 5 Retouched Images</li>
-                        <li><i class="fas fa-check"></i> 1 Social Media Banner</li>
-                    </ul>
-                </div>
-                <div class="pricing-cta">
-                    <button type="button" class="btn btn-primary btn-pricing" style="background: #ff6b6b; border-color: #ff6b6b;" data-bs-toggle="modal" data-bs-target="#quoteModal" data-package="Standard">
-                        Get Started
-                    </button>
-                </div>
-            </div>
-            
-            <!-- Premium Package -->
-            <div class="pricing-card">
-                <div class="pricing-header">
-                    <span class="pricing-category">Premium</span>
-                    <h2 class="pricing-title">Elite</h2>
-                    <p class="pricing-price">$899</p>
-                    <span class="pricing-duration">per session</span>
-                </div>
-                <div class="pricing-features">
-                    <ul class="feature-list">
-                        <li><i class="fas fa-check"></i> 4 Hour Photo Session</li>
-                        <li><i class="fas fa-check"></i> 60+ High-Resolution Images</li>
-                        <li><i class="fas fa-check"></i> Unlimited Outfit Changes</li>
-                        <li><i class="fas fa-check"></i> Up to 3 Locations</li>
-                        <li><i class="fas fa-check"></i> Online Gallery</li>
-                        <li><i class="fas fa-check"></i> 3-Day Priority Delivery</li>
-                        <li><i class="fas fa-check"></i> 15 Retouched Images</li>
-                        <li><i class="fas fa-check"></i> 3 Social Media Banners</li>
-                        <li><i class="fas fa-check"></i> 1 Printed 8x10" Photo</li>
-                        <li><i class="fas fa-check"></i> Behind-the-Scenes Video</li>
-                    </ul>
-                </div>
-                <div class="pricing-cta">
-                    <button type="button" class="btn btn-outline-primary btn-pricing" data-bs-toggle="modal" data-bs-target="#quoteModal" data-package="Elite">
-                        Get Started
-                    </button>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Custom Quote Section -->
+        <!-- Contact Section -->
         <div class="quote-section">
-            <div class="section-title">
-                <h2>Need Something Custom?</h2>
-                <p>Have a specific project in mind? Fill out the form below and I'll get back to you with a personalized quote.</p>
+            <div class="section-title text-center">
+                <h2>Get In Touch</h2>
+                <p>Contact me to discuss your project and receive my rate card.</p>
             </div>
             
             <div class="row justify-content-center">
-                <div class="col-lg-8">
-                    <div class="quote-form">
-                        <form method="post" id="quoteForm">
-                            {% csrf_token %}
-                            <input type="hidden" name="package" id="packageField" value="">
-                            
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="name" class="form-label">Your Name *</label>
-                                        <input type="text" class="form-control" id="name" name="name" required>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="email" class="form-label">Email Address *</label>
-                                        <input type="email" class="form-control" id="email" name="email" required>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="phone" class="form-label">Phone Number</label>
-                                        <input type="tel" class="form-control" id="phone" name="phone">
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="package" class="form-label">Package Interest</label>
-                                        <select class="form-select" id="package" name="package_interest">
-                                            <option value="Basic">Basic</option>
-                                            <option value="Standard" selected>Standard</option>
-                                            <option value="Elite">Elite</option>
-                                            <option value="Custom">Custom Project</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="message" class="form-label">Tell me about your project *</label>
-                                <textarea class="form-control" id="message" name="message" rows="4" required></textarea>
-                            </div>
-                            
-                            <div class="form-group form-check">
-                                <input type="checkbox" class="form-check-input" id="newsletter" name="newsletter" checked>
-                                <label class="form-check-label" for="newsletter">Subscribe to my newsletter for updates and offers</label>
-                            </div>
-                            
-                            <div class="mt-4">
-                                <button type="submit" class="btn-submit">Request a Quote</button>
-                            </div>
-                        </form>
+                <div class="col-lg-6 text-center">
+                    <div class="contact-info">
+                        <div class="email-contact mb-4">
+                            <h4 class="mb-3">Contact Me</h4>
+                            <a href="mailto:imaana@example.com" class="btn btn-primary btn-lg">
+                                <i class="fas fa-envelope me-2"></i>Send Email
+                            </a>
+                        </div>
+                        <div class="rate-card-info">
+                            <p class="text-muted">
+                                <i class="fas fa-info-circle me-2"></i>
+                                Rate card sent upon request
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
         
         <!-- FAQ Section -->
-        <div class="faq-section">
-            <div class="section-title">
-                <h2>Frequently Asked Questions</h2>
-                <p>Find answers to common questions about my services and booking process.</p>
+        <div class="faq-section" style="display: block !important; visibility: visible !important;">
+            <div class="section-title text-center">
+                <h2 style="color: #333; font-size: 2rem; font-weight: 700;">Frequently Asked Questions</h2>
+                <p style="color: #6c757d; font-size: 1.1rem;">Find answers to common questions about my services and booking process.</p>
             </div>
             
-            <div class="accordion" id="faqAccordion">
-                <div class="accordion-item">
+            <div class="accordion" id="faqAccordion" style="display: block !important;">
+                <div class="accordion-item" style="display: block !important; margin-bottom: 15px; border: 1px solid #e1e5ee; border-radius: 8px;">
                     <h2 class="accordion-header" id="headingOne">
-                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                            How do I book a session?
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" style="font-weight: 600; padding: 20px 25px; background: #fff9f9; color: #ff6b6b;">
+                            How do I work with brands and businesses?
                         </button>
                     </h2>
                     <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#faqAccordion">
-                        <div class="accordion-body">
-                            Booking a session is easy! Simply fill out the quote form above with your details and preferred package. I'll get back to you within 24-48 hours to discuss availability and next steps. A 30% deposit is required to secure your booking date.
+                        <div class="accordion-body" style="padding: 20px 25px; color: #6c757d;">
+                            I collaborate with brands to create authentic digital content and marketing campaigns. Simply email me with your project details and I'll send you my rate card with pricing information.
                         </div>
                     </div>
                 </div>
                 
-                <div class="accordion-item">
+                <div class="accordion-item" style="display: block !important; margin-bottom: 15px; border: 1px solid #e1e5ee; border-radius: 8px;">
                     <h2 class="accordion-header" id="headingTwo">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                            What should I wear for my photoshoot?
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo" style="font-weight: 600; padding: 20px 25px;">
+                            What types of content do you create for brands?
                         </button>
                     </h2>
                     <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#faqAccordion">
-                        <div class="accordion-body">
-                            I recommend bringing 2-3 outfit options that reflect your personal style and the look you want to achieve. Solid colors generally work best, and it's good to avoid busy patterns or logos that can be distracting. I'll provide a detailed style guide after booking with more specific recommendations based on your session type and location.
+                        <div class="accordion-body" style="padding: 20px 25px; color: #6c757d;">
+                            I create authentic digital content including social media posts, stories, reels, product showcases, brand campaigns, and promotional content. I specialize in lifestyle, fashion, and beauty content that resonates with audiences and drives engagement for your brand.
                         </div>
                     </div>
                 </div>
                 
-                <div class="accordion-item">
+                <div class="accordion-item" style="display: block !important; margin-bottom: 15px; border: 1px solid #e1e5ee; border-radius: 8px;">
                     <h2 class="accordion-header" id="headingThree">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                            How long until I receive my photos?
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree" style="font-weight: 600; padding: 20px 25px;">
+                            How long until I deliver the content?
                         </button>
                     </h2>
                     <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#faqAccordion">
-                        <div class="accordion-body">
-                            The delivery time depends on the package you choose. For Basic packages, you'll receive your photos within 7 business days. Standard packages are delivered within 5 business days, and Elite packages have a 3-business day turnaround. I always aim to deliver your images as quickly as possible without compromising on quality.
+                        <div class="accordion-body" style="padding: 20px 25px; color: #6c757d;">
+                            Content delivery depends on your project scope and requirements. Typically, you'll receive your digital content within 5-7 business days for standard campaigns. Rush delivery is available for urgent brand launches or time-sensitive promotions. I always aim to deliver high-quality content that meets your deadlines.
                         </div>
                     </div>
                 </div>
                 
-                <div class="accordion-item">
+                <div class="accordion-item" style="display: block !important; margin-bottom: 15px; border: 1px solid #e1e5ee; border-radius: 8px;">
                     <h2 class="accordion-header" id="headingFour">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
-                            Do you offer prints or just digital files?
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour" style="font-weight: 600; padding: 20px 25px;">
+                            What's included in your brand collaboration packages?
                         </button>
                     </h2>
                     <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#faqAccordion">
-                        <div class="accordion-body">
-                            All packages include high-resolution digital images delivered through a private online gallery where you can download your photos. The Elite package includes one 8x10" print. I also offer professional print services and custom albums as add-ons. You'll have the option to purchase additional prints and products directly through your gallery.
+                        <div class="accordion-body" style="padding: 20px 25px; color: #6c757d;">
+                            My brand collaboration packages include high-quality digital content optimized for various platforms, usage rights for your marketing campaigns, and content strategy consultation. I can create custom content calendars based on your brand's needs and target audience.
                         </div>
                     </div>
                 </div>
                 
-                <div class="accordion-item">
+                <div class="accordion-item" style="display: block !important; margin-bottom: 15px; border: 1px solid #e1e5ee; border-radius: 8px;">
                     <h2 class="accordion-header" id="headingFive">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
-                            What is your cancellation policy?
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive" style="font-weight: 600; padding: 20px 25px;">
+                            How do you measure campaign success?
                         </button>
                     </h2>
                     <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive" data-bs-parent="#faqAccordion">
-                        <div class="accordion-body">
-                            I understand that plans can change. If you need to reschedule, please provide at least 48 hours' notice, and your deposit can be applied to a new date within 3 months. Cancellations made less than 48 hours before the session will result in forfeiture of the deposit. In case of inclement weather, we can reschedule at no additional cost.
+                        <div class="accordion-body" style="padding: 20px 25px; color: #6c757d;">
+                            I track basic performance metrics like engagement and reach to help evaluate content success. We can discuss specific reporting needs based on your campaign goals and requirements.
                         </div>
                     </div>
                 </div>
@@ -564,14 +433,7 @@
             });
         });
         
-        // Form submission handling - Let Django handle the form submission naturally
-        const quoteForm = document.getElementById('quoteForm');
-        if (quoteForm) {
-            quoteForm.addEventListener('submit', function(e) {
-                // Allow normal form submission to Django
-                // The success message will be handled by Django messages framework
-            });
-        }
+        // No form handling needed since we removed the form
         
         // Initialize tooltips
         const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
