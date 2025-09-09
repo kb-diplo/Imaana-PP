@@ -45,6 +45,7 @@ staticfiles/
 *.key
 *.pem
 *.crt
+pythonanywhere_deployment.md
 
 # Logs
 logs/
