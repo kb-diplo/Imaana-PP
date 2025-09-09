@@ -199,6 +199,14 @@ class CustomContactMessageAdmin(admin.ModelAdmin):
 
 
 # Register models with custom admin site
+from django.contrib import admin
+from portfolio.models import ContactMessage, SiteSettings
+
+# Unregister SiteSettings from default admin if it's already registered
+if admin.site.is_registered(SiteSettings):
+    admin.site.unregister(SiteSettings)
+
+# Register models with custom admin site
 portfolio_admin_site.register(GalleryImage, CustomGalleryImageAdmin)
 portfolio_admin_site.register(ProfileImage, CustomProfileImageAdmin)
 portfolio_admin_site.register(ContactMessage, CustomContactMessageAdmin)

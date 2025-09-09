@@ -28,9 +28,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-fallback-key-for-development-only')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv('DEBUG', 'True') == 'True'
+DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
+# Add your PythonAnywhere domain here
+PYTHONANYWHERE_DOMAIN = os.getenv('PYTHONANYWHERE_DOMAIN', 'imaana.pythonanywhere.com')
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', PYTHONANYWHERE_DOMAIN, f'www.{PYTHONANYWHERE_DOMAIN}']
 
 
 # Application definition
@@ -127,22 +129,39 @@ USE_I18N = True
 
 USE_TZ = True
 
+# Determine if we're running on PythonAnywhere
+PYTHONANYWHERE = 'PYTHONANYWHERE_DOMAIN' in os.environ
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+if PYTHONANYWHERE:
+    # PythonAnywhere settings
+    import os
+    username = os.getenv('PYTHONANYWHERE_USERNAME', 'imaana')
+    
+    # Static files
+    STATIC_URL = '/static/'
+    STATIC_ROOT = f'/home/{username}/static'
+    
+    # Media files
+    MEDIA_URL = '/media/'
+    MEDIA_ROOT = f'/home/{username}/media'
+else:
+    # Local development settings
+    STATIC_URL = '/static/'
+    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+    MEDIA_URL = '/media/'
+    MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# Additional locations of static files
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
 
-# Media files (Uploaded files)
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-
-# Static files storage
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+# Ensure the directories exist
+os.makedirs(STATIC_ROOT, exist_ok=True)
+os.makedirs(MEDIA_ROOT, exist_ok=True)
 
 # Crispy Forms
 CRISPY_ALLOWED_TEMPLATE_PACKS = 'bootstrap5'

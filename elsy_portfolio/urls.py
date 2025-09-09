@@ -52,11 +52,8 @@ urlpatterns = [
         content_type='text/plain'
     )),
     
-    # Favicon (browsers will look for this automatically)
-    path('favicon.ico', TemplateView.as_view(
-        template_name='favicon.ico', 
-        content_type='image/x-icon'
-    )),
+    # Favicon (redirect to static file)
+    path('favicon.ico', redirect('/static/img/favicon.ico')),
 ]
 
 # Serve media files in development
