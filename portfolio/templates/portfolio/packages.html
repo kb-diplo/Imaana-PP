@@ -280,23 +280,22 @@
         
         <!-- Contact Section -->
         <div class="quote-section mb-5">
-            <div class="section-title text-center mb-4">
-                <h2 class="mb-3" style="color: #2c3e50; font-size: 2rem; font-weight: 700;">Get In Touch</h2>
-                <p class="text-muted" style="font-size: 1.1rem;">Contact me to discuss your project and receive my rate card.</p>
+            <div class="text-center mb-5">
+                <h2 class="display-5 fw-bold mb-3" style="color: #2c3e50;">Get In Touch</h2>
+                <p class="lead" style="color: #6c757d; max-width: 600px; margin: 0 auto;">Contact me to discuss your project and receive my rate card.</p>
             </div>
             
             <div class="row justify-content-center">
-                <div class="col-lg-6 text-center">
-                    <div class="p-4 rounded-3" style="background-color: #f8f9fa;">
-                        <div class="email-contact mb-4">
-                            <h4 class="mb-4" style="color: #2c3e50; font-weight: 600;">Contact Me</h4>
-                            <a href="mailto:{{ site_settings.email|default:'imaana@example.com' }}" class="btn btn-primary btn-lg px-4" style="background-color: #ff6b6b; border: none; padding: 10px 25px;">
+                <div class="col-lg-6">
+                    <div class="text-center p-4">
+                        <div class="mb-4">
+                            <a href="mailto:{{ site_settings.email|default:'imaana@example.com' }}" class="btn btn-primary btn-lg px-5 py-3" style="background-color: #ff6b6b; border: none; font-weight: 500; font-size: 1.1rem;">
                                 <i class="fas fa-envelope me-2"></i>Send Email
                             </a>
                         </div>
-                        <div class="rate-card-info mt-3">
-                            <p class="text-muted mb-0">
-                                <i class="fas fa-info-circle me-2"></i>
+                        <div class="rate-card-info">
+                            <p class="text-muted mb-0" style="font-size: 0.95rem;">
+                                <i class="fas fa-info-circle me-1"></i>
                                 Rate card sent upon request
                             </p>
                         </div>
@@ -306,10 +305,10 @@
         </div>
         
         <!-- FAQ Section -->
-        <div class="faq-section" style="display: block !important; visibility: visible !important;">
-            <div class="section-title text-center">
-                <h2 style="color: #333; font-size: 2rem; font-weight: 700;">Frequently Asked Questions</h2>
-                <p style="color: #6c757d; font-size: 1.1rem;">Find answers to common questions about my services and booking process.</p>
+        <div class="faq-section mt-5 pt-5" style="display: block !important; visibility: visible !important; border-top: 1px solid #eee;">
+            <div class="text-center mb-5">
+                <h2 class="display-5 fw-bold mb-3" style="color: #2c3e50;">Frequently Asked Questions</h2>
+                <p class="lead" style="color: #6c757d; max-width: 700px; margin: 0 auto;">Find answers to common questions about my services and booking process.</p>
             </div>
             
             <div class="accordion" id="faqAccordion" style="display: block !important;">
