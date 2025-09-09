@@ -157,6 +157,7 @@ class ContactMessage(TimeStampedModel):
     name = models.CharField(max_length=100)
     email = models.EmailField()
     phone = models.CharField(max_length=20, blank=True)
+    service_interest = models.CharField(max_length=100, blank=True, help_text='Service of interest')
     subject = models.CharField(max_length=200)
     message = models.TextField()
     is_responded = models.BooleanField(
@@ -249,6 +250,13 @@ class SiteSettings(models.Model):
     """Model for managing site-wide settings and social media links."""
     site_name = models.CharField(max_length=100, default="IMA ANA Portfolio")
     site_description = models.TextField(default="Digital Creator & Professional Model")
+    main_profile_image = models.ForeignKey(
+        'ProfileImage', 
+        on_delete=models.SET_NULL, 
+        null=True, 
+        blank=True,
+        help_text="Select the main profile image to display across the site"
+    )
     instagram_url = models.URLField(blank=True, help_text="Instagram profile URL")
     tiktok_url = models.URLField(blank=True, help_text="TikTok profile URL", default="https://www.tiktok.com/@lcmukiri?_t=ZM-8zYQ4OgHYE2&_r=1")
     whatsapp_number = models.CharField(max_length=20, blank=True, help_text="WhatsApp number with country code")

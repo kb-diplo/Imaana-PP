@@ -20,16 +20,32 @@ class GalleryImageAdmin(admin.ModelAdmin):
     search_fields = ('title', 'alt_text', 'caption')
     ordering = ('order', '-created_at')
     actions = ['activate_images', 'deactivate_images']
-    fields = ('title', 'image', 'alt_text', 'caption', 'order', 'is_active')
+    fields = ('title', 'image', 'image_preview', 'alt_text', 'caption', 'order', 'is_active')
+    readonly_fields = ('image_preview',)
     
     def thumbnail_preview(self, obj):
         if obj.image:
-            return format_html(
-                '<img src="{}" style="width: 50px; height: 50px; object-fit: cover; border-radius: 4px;" />',
-                obj.image.url
-            )
+            try:
+                return format_html(
+                    '<img src="{}" style="width: 50px; height: 50px; object-fit: cover; border-radius: 4px;" />',
+                    obj.image.url
+                )
+            except:
+                return "Image Error"
         return "No Image"
     thumbnail_preview.short_description = "Preview"
+    
+    def image_preview(self, obj):
+        if obj.image:
+            try:
+                return format_html(
+                    '<img src="{}" style="max-width: 300px; max-height: 300px; object-fit: contain;" />',
+                    obj.image.url
+                )
+            except:
+                return "Image not found"
+        return "No image uploaded"
+    image_preview.short_description = "Image Preview"
     
     def activate_images(self, request, queryset):
         queryset.update(is_active=True)
@@ -48,34 +64,64 @@ class ProfileImageAdmin(admin.ModelAdmin):
     list_editable = ('is_active',)
     search_fields = ('title', 'description')
     ordering = ('-is_active', '-created_at')
+    fields = ('title', 'image', 'image_preview', 'description', 'is_active')
+    readonly_fields = ('image_preview',)
     
     def thumbnail_preview(self, obj):
         if obj.image:
-            return format_html(
-                '<img src="{}" style="width: 50px; height: 50px; object-fit: cover; border-radius: 4px;" />',
-                obj.image.url
-            )
+            try:
+                return format_html(
+                    '<img src="{}" style="width: 50px; height: 50px; object-fit: cover; border-radius: 4px;" />',
+                    obj.image.url
+                )
+            except:
+                return "Image Error"
         return "No Image"
     thumbnail_preview.short_description = "Preview"
+    
+    def image_preview(self, obj):
+        if obj.image:
+            try:
+                return format_html(
+                    '<img src="{}" style="max-width: 300px; max-height: 300px; object-fit: contain;" />',
+                    obj.image.url
+                )
+            except:
+                return "Image not found"
+        return "No image uploaded"
+    image_preview.short_description = "Image Preview"
 
 
 class PortfolioItemAdmin(admin.ModelAdmin):
-    list_display = ('title', 'category', 'is_featured', 'published', 'created_at')
+    list_display = ('title', 'main_image_preview', 'category', 'is_featured', 'published', 'created_at')
     list_filter = ('category', 'is_featured', 'published', 'created_at')
     search_fields = ('title', 'description')
     prepopulated_fields = {'slug': ('title',)}
     inlines = [PortfolioImageInline]
     fieldsets = (
         (None, {
-            'fields': ('title', 'slug', 'description', 'category', 'main_image')
+            'fields': ('title', 'slug', 'description', 'category', 'main_image', 'main_image_preview')
         }),
         ('Visibility', {
             'fields': ('is_featured', 'published'),
             'classes': ('collapse',)
         }),
     )
+    readonly_fields = ('main_image_preview',)
     date_hierarchy = 'created_at'
     list_per_page = 20
+    
+    def main_image_preview(self, obj):
+        if obj.main_image:
+            try:
+                return format_html(
+                    '<img src="{}" style="max-width: 200px; max-height: 200px; object-fit: contain;" />',
+                    obj.main_image.url
+                )
+            except:
+                return "Image not found"
+        return "No main image"
+    main_image_preview.short_description = "Main Image Preview"
 
 
 class PortfolioImageAdmin(admin.ModelAdmin):
@@ -147,17 +193,17 @@ class QuoteRequestAdmin(admin.ModelAdmin):
 
 
 class ContactMessageAdmin(admin.ModelAdmin):
-    list_display = ('name', 'email', 'subject', 'is_responded', 'created_at')
-    list_filter = ('is_responded', 'created_at')
-    search_fields = ('name', 'email', 'subject', 'message')
+    list_display = ('name', 'email', 'service_interest', 'subject', 'is_responded', 'created_at')
+    list_filter = ('is_responded', 'service_interest', 'created_at')
+    search_fields = ('name', 'email', 'subject', 'message', 'service_interest')
     list_editable = ('is_responded',)
     readonly_fields = ('created_at', 'updated_at')
     fieldsets = (
         ('Sender Info', {
             'fields': ('name', 'email', 'phone')
         }),
-        ('Message', {
-            'fields': ('subject', 'message')
+        ('Message Details', {
+            'fields': ('service_interest', 'subject', 'message')
         }),
         ('Status', {
             'fields': ('is_responded',)
@@ -188,11 +234,15 @@ class ServiceAdmin(admin.ModelAdmin):
 
 
 class SiteSettingsAdmin(admin.ModelAdmin):
-    list_display = ('site_name', 'hero_title', 'hero_subtitle', 'updated_at')
+    list_display = ('site_name', 'hero_title', 'hero_subtitle', 'main_profile_image', 'updated_at')
     fieldsets = (
         ('🏠 Site Information', {
             'fields': ('site_name', 'site_description'),
             'description': 'Basic site information and branding'
+        }),
+        ('👤 Profile Settings', {
+            'fields': ('main_profile_image',),
+            'description': 'Select the main profile image to display across the site'
         }),
         ('✨ Hero Section', {
             'fields': ('hero_title', 'hero_subtitle'),
@@ -227,12 +277,10 @@ class SiteSettingsAdmin(admin.ModelAdmin):
 
 
 # Register models with default admin site
-admin.site.register(PortfolioItem, PortfolioItemAdmin)
-admin.site.register(PortfolioImage, PortfolioImageAdmin)
 admin.site.register(Package, PackageAdmin)
 admin.site.register(QuoteRequest, QuoteRequestAdmin)
 admin.site.register(ContactMessage, ContactMessageAdmin)
+admin.site.register(GalleryImage, GalleryImageAdmin)
+admin.site.register(ProfileImage, ProfileImageAdmin)
 admin.site.register(Service, ServiceAdmin)
 admin.site.register(SiteSettings, SiteSettingsAdmin)
-
-# Note: GalleryImage and ProfileImage are registered with custom admin site only

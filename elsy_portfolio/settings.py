@@ -201,12 +201,6 @@ LOGGING = {
         },
     },
     'handlers': {
-        'file': {
-            'level': 'INFO',
-            'class': 'logging.FileHandler',
-            'filename': BASE_DIR / 'django.log',
-            'formatter': 'verbose',
-        },
         'console': {
             'level': 'DEBUG',
             'class': 'logging.StreamHandler',
@@ -218,14 +212,14 @@ LOGGING = {
         'level': 'WARNING',
     },
     'loggers': {
-        'django': {
-            'handlers': ['file', 'console'],
+        'portfolio.views': {
+            'handlers': ['console'],
             'level': 'INFO',
             'propagate': False,
         },
-        'portfolio': {
-            'handlers': ['file', 'console'],
-            'level': 'DEBUG',
+        'django': {
+            'handlers': ['console'],
+            'level': 'INFO',
             'propagate': False,
         },
     },

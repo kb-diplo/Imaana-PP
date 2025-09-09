@@ -280,24 +280,26 @@
         
         <!-- Contact Section -->
         <div class="quote-section mb-5">
-            <div class="text-center mb-5">
-                <h2 class="display-5 fw-bold mb-3" style="color: #2c3e50;">Get In Touch</h2>
-                <p class="lead" style="color: #6c757d; max-width: 600px; margin: 0 auto;">Contact me to discuss your project and receive my rate card.</p>
-            </div>
-            
-            <div class="row justify-content-center">
-                <div class="col-lg-6">
-                    <div class="text-center p-4">
-                        <div class="mb-4">
-                            <a href="mailto:{{ site_settings.email|default:'imaana@example.com' }}" class="btn btn-primary btn-lg px-5 py-3" style="background-color: #ff6b6b; border: none; font-weight: 500; font-size: 1.1rem;">
-                                <i class="fas fa-envelope me-2"></i>Send Email
-                            </a>
-                        </div>
-                        <div class="rate-card-info">
-                            <p class="text-muted mb-0" style="font-size: 0.95rem;">
-                                <i class="fas fa-info-circle me-1"></i>
-                                Rate card sent upon request
-                            </p>
+            <div class="container">
+                <div class="text-center mb-4">
+                    <h2 class="display-5 fw-bold mb-3" style="color: #2c3e50;">Get In Touch</h2>
+                    <p class="lead" style="color: #6c757d; max-width: 600px; margin: 0 auto;">Contact me to discuss your project and receive my rate card.</p>
+                </div>
+                
+                <div class="row justify-content-center">
+                    <div class="col-lg-8 col-md-10">
+                        <div class="contact-card text-center p-4 bg-white rounded shadow-sm">
+                            <div class="mb-3">
+                                <a href="mailto:{{ site_settings.email|default:'mukirikimm@gmail.com' }}" class="btn btn-primary btn-lg px-5 py-3" style="background-color: #ff6b6b; border: none; font-weight: 500; font-size: 1.1rem; border-radius: 50px;">
+                                    <i class="fas fa-envelope me-2"></i>Send Email
+                                </a>
+                            </div>
+                            <div class="rate-card-info">
+                                <p class="text-muted mb-0" style="font-size: 0.95rem;">
+                                    <i class="fas fa-info-circle me-1"></i>
+                                    Rate card and pricing details sent upon request
+                                </p>
+                            </div>
                         </div>
                     </div>
                 </div>

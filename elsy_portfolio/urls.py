@@ -37,8 +37,8 @@ urlpatterns = [
     path('packages/', PackageListView.as_view(), name='packages'),
     path('quote/', QuoteRequestView.as_view(), name='quote_request'),
     
-    # Portfolio URLs
-    path('portfolio/', include('portfolio.urls')),
+    # Portfolio URLs (disabled - using gallery instead)
+    # path('portfolio/', include('portfolio.urls')),
     
     # API URLs
     path('api/', include('portfolio.api.urls')),

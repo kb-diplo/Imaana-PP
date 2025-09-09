@@ -1,0 +1,177 @@
+{% extends "custom_admin/base.html" %}
+{% load static %}
+
+{% block page_title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-number">{{ gallery_count|default:0 }}</div>
+        <div class="stat-label">Gallery Images</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-number">{{ profile_count|default:0 }}</div>
+        <div class="stat-label">Profile Images</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-number">{{ message_count|default:0 }}</div>
+        <div class="stat-label">New Messages</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-number">{{ active_gallery_count|default:0 }}</div>
+        <div class="stat-label">Active Gallery</div>
+    </div>
+</div>
+
+<div class="content-card">
+    <h3 style="margin-bottom: 2rem; color: var(--dark-color);">
+        <i class="fas fa-rocket" style="color: var(--primary-color); margin-right: 0.5rem;"></i>
+        Quick Actions
+    </h3>
+    <div class="quick-actions">
+        <a href="/custom-admin/portfolio/galleryimage/add/" class="action-card">
+            <div class="action-icon">
+                <i class="fas fa-plus-circle"></i>
+            </div>
+            <div class="action-title">Add Gallery Image</div>
+            <div class="action-desc">Upload new images to your gallery</div>
+        </a>
+        
+        <a href="/custom-admin/portfolio/profileimage/add/" class="action-card">
+            <div class="action-icon">
+                <i class="fas fa-user-plus"></i>
+            </div>
+            <div class="action-title">Add Profile Photo</div>
+            <div class="action-desc">Upload new profile pictures</div>
+        </a>
+        
+        <a href="/custom-admin/portfolio/galleryimage/" class="action-card">
+            <div class="action-icon">
+                <i class="fas fa-images"></i>
+            </div>
+            <div class="action-title">Manage Gallery</div>
+            <div class="action-desc">Edit and organize gallery images</div>
+        </a>
+        
+        <a href="/custom-admin/portfolio/contactmessage/" class="action-card">
+            <div class="action-icon">
+                <i class="fas fa-envelope"></i>
+            </div>
+            <div class="action-title">View Messages</div>
+            <div class="action-desc">Check and respond to client messages</div>
+        </a>
+    </div>
+</div>
+
+{% if recent_messages %}
+<div class="content-card">
+    <h3 style="margin-bottom: 2rem; color: var(--dark-color);">
+        <i class="fas fa-comments" style="color: var(--primary-color); margin-right: 0.5rem;"></i>
+        Recent Messages
+    </h3>
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Subject</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for message in recent_messages %}
+                <tr>
+                    <td><strong>{{ message.name }}</strong></td>
+                    <td>{{ message.subject|truncatechars:40 }}</td>
+                    <td>{{ message.created_at|date:"M d, Y" }}</td>
+                    <td>
+                        {% if message.is_responded %}
+                            <span class="badge bg-success">Responded</span>
+                        {% else %}
+                            <span class="badge bg-warning">New</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href="/custom-admin/portfolio/contactmessage/{{ message.id }}/change/" class="btn btn-sm btn-primary">
+                            <i class="fas fa-eye"></i> View
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="text-center mt-3">
+        <a href="/custom-admin/portfolio/contactmessage/" class="btn btn-primary">
+            <i class="fas fa-envelope"></i> View All Messages
+        </a>
+    </div>
+</div>
+{% else %}
+<div class="content-card">
+    <div class="text-center py-5">
+        <i class="fas fa-inbox" style="font-size: 4rem; color: var(--border-color); margin-bottom: 1rem;"></i>
+        <h4 style="color: var(--dark-color); margin-bottom: 0.5rem;">No Messages Yet</h4>
+        <p style="color: #6c757d;">When clients contact you through the website, their messages will appear here.</p>
+    </div>
+</div>
+{% endif %}
+
+<div class="content-card">
+    <h3 style="margin-bottom: 2rem; color: var(--dark-color);">
+        <i class="fas fa-chart-line" style="color: var(--primary-color); margin-right: 0.5rem;"></i>
+        Content Overview
+    </h3>
+    <div class="row">
+        <div class="col-md-6">
+            <h5 style="color: var(--dark-color); margin-bottom: 1rem;">Gallery Status</h5>
+            <div class="progress mb-3" style="height: 20px;">
+                <div class="progress-bar" role="progressbar" 
+                     style="width: {% widthratio active_gallery_count gallery_count 100 %}%; background: linear-gradient(135deg, var(--success-color) 0%, #38d9a9 100%);">
+                    {{ active_gallery_count }} of {{ gallery_count }} Active
+                </div>
+            </div>
+            
+            <h5 style="color: var(--dark-color); margin-bottom: 1rem;">Profile Images</h5>
+            <div class="progress mb-3" style="height: 20px;">
+                <div class="progress-bar" role="progressbar" 
+                     style="width: {% widthratio active_profile_count profile_count 100 %}%; background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);">
+                    {{ active_profile_count }} of {{ profile_count }} Active
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6">
+            <h5 style="color: var(--dark-color); margin-bottom: 1rem;">Recent Activity</h5>
+            <ul class="list-unstyled">
+                <li style="margin-bottom: 1rem; padding: 0.75rem; background: #f8f9fa; border-radius: 8px;">
+                    <i class="fas fa-image" style="color: var(--primary-color); margin-right: 0.5rem;"></i>
+                    <strong>Last Gallery Update:</strong>
+                    <br>
+                    <small style="color: #6c757d;">
+                        {% if latest_gallery %}{{ latest_gallery.created_at|date:"F d, Y \a\t g:i A" }}{% else %}No gallery images yet{% endif %}
+                    </small>
+                </li>
+                <li style="margin-bottom: 1rem; padding: 0.75rem; background: #f8f9fa; border-radius: 8px;">
+                    <i class="fas fa-user" style="color: var(--secondary-color); margin-right: 0.5rem;"></i>
+                    <strong>Last Profile Update:</strong>
+                    <br>
+                    <small style="color: #6c757d;">
+                        {% if latest_profile %}{{ latest_profile.created_at|date:"F d, Y \a\t g:i A" }}{% else %}No profile images yet{% endif %}
+                    </small>
+                </li>
+                <li style="padding: 0.75rem; background: #f8f9fa; border-radius: 8px;">
+                    <i class="fas fa-envelope" style="color: var(--warning-color); margin-right: 0.5rem;"></i>
+                    <strong>Last Message:</strong>
+                    <br>
+                    <small style="color: #6c757d;">
+                        {% if latest_message %}{{ latest_message.created_at|date:"F d, Y \a\t g:i A" }}{% else %}No messages yet{% endif %}
+                    </small>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}

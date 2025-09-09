@@ -74,8 +74,6 @@ class ContactForm(forms.ModelForm):
         active_services = Service.objects.filter(is_active=True).order_by('order', 'name')
         for service in active_services:
             service_choices.append((service.name.lower().replace(' ', '_'), service.name))
-        # Add "Other Services" option at the end
-        service_choices.append(('other', 'Other Services'))
         self.fields['service_interest'].choices = service_choices
     
     class Meta:

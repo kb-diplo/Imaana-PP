@@ -100,6 +100,16 @@ document.addEventListener('DOMContentLoaded', function() {
     </div>
 
     {% if cl.result_count %}
+    <form method="POST" action="" id="changelist-form">
+        {% csrf_token %}
+        <input type="hidden" name="action" id="action-input">
+        <input type="hidden" name="select_across" value="0">
+        <input type="hidden" name="index" value="{{ cl.formset.initial_form_count }}">
+        
+        {% if cl.formset.management_form %}
+            {{ cl.formset.management_form }}
+        {% endif %}
+        
     <div class="table-responsive">
         <table class="table table-hover">
             <thead>
@@ -146,10 +156,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 <select name="action" class="form-select" id="bulk-action-select">
                     <option value="">Choose an action...</option>
                     <option value="delete_selected">Delete selected items</option>
-                    {% if 'activate_images' in cl.model_admin.actions %}
-                    <option value="activate_images">Activate selected images</option>
-                    <option value="deactivate_images">Deactivate selected images</option>
-                    {% endif %}
+                    {% for action_name, action_func in cl.model_admin.get_actions.items %}
+                        {% if action_name != 'delete_selected' %}
+                        <option value="{{ action_name }}">{{ action_func.short_description|default:action_name }}</option>
+                        {% endif %}
+                    {% endfor %}
                 </select>
             </div>
             <div class="col-md-6">
@@ -196,6 +207,7 @@ document.addEventListener('DOMContentLoaded', function() {
         </a>
         {% endif %}
     </div>
+    </form>
     {% endif %}
 </div>
 {% endblock %}

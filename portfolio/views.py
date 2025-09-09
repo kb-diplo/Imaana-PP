@@ -24,18 +24,17 @@ class HomeView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         site_settings = SiteSettings.objects.first()
+        
+        # Get profile image from site settings first, fallback to active profile image
+        profile_image = None
+        if site_settings and site_settings.main_profile_image:
+            profile_image = site_settings.main_profile_image
+        else:
+            profile_image = ProfileImage.objects.filter(is_active=True).first()
+            
         context.update({
-            'featured_items': PortfolioItem.objects.filter(
-                is_featured=True, published=True
-            )[:6],
             'gallery_images': GalleryImage.objects.filter(is_active=True).order_by('order'),
-            'profile_image': ProfileImage.objects.filter(is_active=True).first(),
-            'digital_items': PortfolioItem.objects.filter(
-                category='digital', published=True
-            ).order_by('-created_at')[:3],
-            'modelling_items': PortfolioItem.objects.filter(
-                category='modelling', published=True
-            ).order_by('-created_at')[:3],
+            'profile_image': profile_image,
             'site_settings': site_settings,
         })
         return context
@@ -107,7 +106,16 @@ class AboutView(TemplateView):
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['profile_image'] = ProfileImage.objects.filter(is_active=True).first()
+        site_settings = SiteSettings.objects.first()
+        
+        # Get profile image from site settings first, fallback to active profile image
+        profile_image = None
+        if site_settings and site_settings.main_profile_image:
+            profile_image = site_settings.main_profile_image
+        else:
+            profile_image = ProfileImage.objects.filter(is_active=True).first()
+            
+        context['profile_image'] = profile_image
         return context
 
 
@@ -197,25 +205,43 @@ class ContactView(FormView):
     success_url = reverse_lazy('contact')
 
     def form_valid(self, form):
-        # Get the user's IP address
-        x_forwarded_for = self.request.META.get('HTTP_X_FORWARDED_FOR')
-        if x_forwarded_for:
-            ip_address = x_forwarded_for.split(',')[0]
-        else:
-            ip_address = self.request.META.get('REMOTE_ADDR')
+        try:
+            # Save the contact message to the database
+            message = form.save(commit=False)
+            message.is_responded = False  # Set initial status
+            message.save()
+            
+            # Debug logging
+            import logging
+            logger = logging.getLogger(__name__)
+            logger.info(f"Contact message saved successfully: ID={message.id}, Name={message.name}")
 
-        # Save the contact message to the database
-        message = form.save(commit=False)
-        message.is_responded = False  # Set initial status
-        message.save()
-
-        messages.success(
-            self.request,
-            'Your message has been sent successfully! I will get back to you soon.'
-        )
-        return super().form_valid(form)
+            messages.success(
+                self.request,
+                'Your message has been sent successfully! I will get back to you soon.'
+            )
+            return super().form_valid(form)
+        except Exception as e:
+            # Log the error for debugging
+            import logging
+            logger = logging.getLogger(__name__)
+            logger.error(f"Contact form save error: {e}")
+            logger.error(f"Form data: {form.cleaned_data}")
+            logger.error(f"Form errors: {form.errors}")
+            
+            messages.error(
+                self.request,
+                'There was an error saving your message. Please try again.'
+            )
+            return self.form_invalid(form)
     
     def form_invalid(self, form):
+        # Log form validation errors for debugging
+        import logging
+        logger = logging.getLogger(__name__)
+        logger.error(f"Contact form validation errors: {form.errors}")
+        logger.error(f"Form data: {form.data}")
+        
         messages.error(
             self.request,
             'There was an error with your submission. Please check the form and try again.'
