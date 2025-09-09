@@ -55,7 +55,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # For static files
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -131,7 +131,6 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-# Static files (CSS, JavaScript, Images)
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = [
@@ -170,6 +169,18 @@ if not DEBUG:
     SECURE_HSTS_PRELOAD = True
     SECURE_HSTS_SECONDS = 31536000
     SECURE_REDIRECT_EXEMPT = []
+    
+    # For serving media files in production
+    from django.urls import re_path
+    from django.views.static import serve
+    
+    def add_media_urls(urlpatterns):
+        return urlpatterns + [
+            re_path(r'^media/(?P<path>.*)$', serve, {'document_root': MEDIA_ROOT}),
+        ]
+    
+    # Add media URL pattern
+    urlpatterns = add_media_urls(urlpatterns) if 'urlpatterns' in locals() else []
     SECURE_SSL_REDIRECT = True
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
