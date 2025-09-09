@@ -143,8 +143,6 @@ if PYTHONANYWHERE:
     # Static files
     STATIC_URL = '/static/'
     STATIC_ROOT = f'/home/{username}/static'
-    
-    # Media files
     MEDIA_URL = '/media/'
     MEDIA_ROOT = f'/home/{username}/media'
 else:
@@ -183,27 +181,15 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Security settings for production
 if not DEBUG:
     SECURE_BROWSER_XSS_FILTER = True
-    SECURE_CONTENT_TYPE_NOSNIFF = True
-    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-    SECURE_HSTS_PRELOAD = True
-    SECURE_HSTS_SECONDS = 31536000
+    SECURE_CONTENT_TYPE_NOSNIFF = False
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = False
+    SECURE_HSTS_PRELOAD = False
+    SECURE_HSTS_SECONDS = 0
     SECURE_REDIRECT_EXEMPT = []
-    
-    # For serving media files in production
-    from django.urls import re_path
-    from django.views.static import serve
-    
-    def add_media_urls(urlpatterns):
-        return urlpatterns + [
-            re_path(r'^media/(?P<path>.*)$', serve, {'document_root': MEDIA_ROOT}),
-        ]
-    
-    # Add media URL pattern
-    urlpatterns = add_media_urls(urlpatterns) if 'urlpatterns' in locals() else []
-    SECURE_SSL_REDIRECT = True
-    SESSION_COOKIE_SECURE = True
-    CSRF_COOKIE_SECURE = True
-    X_FRAME_OPTIONS = 'DENY'
+    SECURE_SSL_REDIRECT = False
+    SESSION_COOKIE_SECURE = False
+    CSRF_COOKIE_SECURE = False
+    X_FRAME_OPTIONS = 'SAMEORIGIN'
 
 # Logging configuration
 LOGGING = {

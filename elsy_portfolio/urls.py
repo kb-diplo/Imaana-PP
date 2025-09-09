@@ -10,6 +10,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.shortcuts import redirect
 from django.views.generic import TemplateView
+from django.http import HttpResponse
 from portfolio.views import (
     HomeView, AboutView, ContactView, 
     PackageListView, QuoteRequestView,
@@ -52,8 +53,8 @@ urlpatterns = [
         content_type='text/plain'
     )),
     
-    # Favicon (redirect to static file)
-    path('favicon.ico', redirect('/static/img/favicon.ico')),
+    # Favicon (return 404 to avoid template errors)
+    path('favicon.ico', lambda request: HttpResponse(status=404)),
 ]
 
 # Serve media files in development
