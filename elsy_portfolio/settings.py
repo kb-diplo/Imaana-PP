@@ -32,7 +32,7 @@ DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
 # Add your PythonAnywhere domain here
 PYTHONANYWHERE_DOMAIN = os.getenv('PYTHONANYWHERE_DOMAIN', 'imaana.pythonanywhere.com')
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', PYTHONANYWHERE_DOMAIN, f'www.{PYTHONANYWHERE_DOMAIN}']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'imaana.pythonanywhere.com', 'www.imaana.pythonanywhere.com', PYTHONANYWHERE_DOMAIN, f'www.{PYTHONANYWHERE_DOMAIN}']
 
 
 # Application definition
@@ -130,7 +130,7 @@ USE_I18N = True
 USE_TZ = True
 
 # Determine if we're running on PythonAnywhere
-PYTHONANYWHERE = 'PYTHONANYWHERE_DOMAIN' in os.environ
+PYTHONANYWHERE = 'PYTHONANYWHERE_DOMAIN' in os.environ or '/home/' in str(BASE_DIR)
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
